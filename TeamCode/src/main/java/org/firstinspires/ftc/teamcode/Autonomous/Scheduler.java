@@ -1,7 +1,7 @@
 package org.firstinspires.ftc.teamcode.Autonomous;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.Commands;
+import org.firstinspires.ftc.teamcode.Autonomous.Commands.Commands;
 import org.firstinspires.ftc.teamcode.Main.Robot.Robot;
 
 import java.util.ArrayList;

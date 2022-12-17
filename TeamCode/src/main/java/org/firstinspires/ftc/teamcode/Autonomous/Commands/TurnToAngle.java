@@ -1,8 +1,5 @@
 package org.firstinspires.ftc.teamcode.Autonomous.Commands;
 
-import org.firstinspires.ftc.teamcode.Commands;
-import org.firstinspires.ftc.teamcode.Main.Robot.Robot;
-
 public class TurnToAngle extends Commands {
     private double currentAngle;
     public double desiredAngle;

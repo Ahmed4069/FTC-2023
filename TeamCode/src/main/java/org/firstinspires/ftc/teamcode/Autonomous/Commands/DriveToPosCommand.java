@@ -1,11 +1,6 @@
 package org.firstinspires.ftc.teamcode.Autonomous.Commands;
 
 
-import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.Commands;
-
-import org.firstinspires.ftc.teamcode.Subsystems.DriveBase;
-
 public class DriveToPosCommand extends Commands {
     private double speed;
     public double desiredPosition;
