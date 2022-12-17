@@ -1,0 +1,157 @@
+// this version uses 3 encoders
+package org.firstinspires.ftc.teamcode.Subsystems;
+
+
+
+
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.HardwareMap;
+
+public class DriveBase {
+    // define the hardware
+    private DcMotor motorRF, motorRB, motorLF, motorLB;
+    private Gyro gyro;
+
+    // define variables for odometry
+    private double lastForwardPos = 0, lastSidewaysPos = 0;
+    public double[] position = {0, 0};
+
+    public DriveBase(HardwareMap hardwareMap) {
+        motorRF = hardwareMap.get(DcMotor.class, "motorRF");
+        motorLF = hardwareMap.get(DcMotor.class, "motorLF");
+        motorRB = hardwareMap.get(DcMotor.class, "motorRB");
+        motorLB = hardwareMap.get(DcMotor.class, "motorLB");
+
+        motorLF.setDirection(DcMotor.Direction.REVERSE);
+        motorLB.setDirection(DcMotor.Direction.REVERSE);
+
+        motorRF.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        motorRB.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        motorLF.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        motorLB.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        motorRF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        motorLF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        motorRB.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        motorLB.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        gyro = new Gyro(hardwareMap);
+
+    }
+
+    public void setMotorPowers(double p_lf, double p_lb, double p_rf, double p_rb) {
+        motorLF.setPower(p_lf);
+        motorLB.setPower(p_lb);
+        motorRF.setPower(p_rf);
+        motorRB.setPower(p_rb);
+    }
+
+    /** a function to drive by controls, field oriented */
+    public void driveByControls(double x, double y, double rx) {
+        double botHeading = -gyro.getHeading();
+
+        double rotX = x * Math.cos(botHeading) - y * Math.sin(botHeading);
+        double rotY = x * Math.sin(botHeading) + y * Math.cos(botHeading);
+
+        double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
+        // Denominator is the largest motor power (absolute value) or 1
+        // This ensures all the powers maintain the same ratio, but only when
+        // at least one is out of the range [-1, 1]
+
+        double powerLF = (rotY + rotX + rx) / denominator;
+        double powerLB = (rotY - rotX + rx) / denominator;
+        double powerRF = (rotY - rotX - rx) / denominator;
+        double powerRB = (rotY + rotX - rx) / denominator;
+
+        setMotorPowers(powerLF, powerLB, powerRF, powerRB);
+    }
+
+    public void stop() {
+        setMotorPowers(0, 0, 0, 0);
+    }
+
+    /* update the position, called in teleOp loop and should in auto loop */
+    public void updatePosition(){
+        double currentForwardPos = ((motorLF.getCurrentPosition() + motorRF.getCurrentPosition()) * 0.0000547849) / 2;
+        double currentSidewaysPos = motorRB.getCurrentPosition() * 0.0000547849;
+
+        double forwardChange = currentForwardPos - lastForwardPos;
+        double sidewaysChange = currentSidewaysPos - lastSidewaysPos;
+
+        // calculate change in forward(relative to the bot) direction
+        double delta_x = Math.sin(-gyro.getHeading()) * forwardChange + Math.cos(-gyro.getHeading()) * sidewaysChange;
+        double delta_y = Math.cos(-gyro.getHeading()) * forwardChange + Math.sin(-gyro.getHeading()) * sidewaysChange;
+
+        /*
+        // calculate sideways angle
+        double sideways_angle = -Gyro.getHeading() - (Math.PI / 2);
+        if (Math.abs(sideways_angle) > Math.PI) {
+            sideways_angle += sideways_angle > Math.PI ? -2 * Math.PI : 2 * Math.PI;
+        }
+
+        // calculate change in the sideways(relative to the bot) direction
+        delta_x += Math.cos(sideways_angle) * sidewaysChange;
+        delta_y += Math.sin(sideways_angle) * sidewaysChange;*/
+
+        position[0] += delta_x;
+        position[1] += delta_y;
+
+        lastForwardPos = currentForwardPos;
+        lastSidewaysPos = currentSidewaysPos;
+    }
+
+    public double getHeading() {
+        return gyro.getHeading();
+    }
+
+    public void driveToPos(double x, double y){
+        updatePosition();
+
+        double distanceToTargetX = x - position[0];
+        double distanceToTargetY = y - position[1];
+
+        double requiredDistanceX = distanceToTargetX / 0.0000547849;
+        double requiredDistanceY = distanceToTargetY / 0.0000547849;
+
+        updatePosition();
+        if (distanceToTargetY > 0.1){
+            if(position[1] <= y){
+                setMotorPowers(0.5, -0.5, 0.5, -0.5);
+            }
+            else{
+                stop();
+            }
+        }
+
+        else if (distanceToTargetY < 0.1){
+            if (position[0] >= y){
+                setMotorPowers(-0.5,-0.5,-0.5,-0.5);
+            }
+            else{
+                stop();
+            }
+        }
+
+        if (distanceToTargetX > 0.1){
+            if(position[0] <= x){
+                setMotorPowers(0.5,0.5,0.5,0.5);
+            }
+            else{
+                stop();
+            }
+        }
+
+        else if (distanceToTargetX < 0.1){
+            if (position[0] >= x){
+                setMotorPowers(-0.5,-0.5,-0.5,-0.5);
+            }
+            else{
+                stop();
+            }
+        }
+    }
+
+    public void disable(){
+        stop();
+    }
+}
