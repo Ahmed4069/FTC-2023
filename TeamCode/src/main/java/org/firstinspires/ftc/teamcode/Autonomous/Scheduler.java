@@ -52,6 +52,9 @@ public class Scheduler {
                 }
             }
         }
+        else{
+            disableSubsystems();
+        }
     }
     public void disableSubsystems() {
         robot.disable();
