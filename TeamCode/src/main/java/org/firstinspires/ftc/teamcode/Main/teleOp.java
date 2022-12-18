@@ -73,10 +73,14 @@ public class teleOp extends OpMode {
 
         //Minor changes done to support Field Oriented
 
-        if (gamepad2.b)
+        if (gamepad2.b) {
             posCode = 1;
-        else if (gamepad2.x)
+            arm.lockIntake();
+        }
+        else if (gamepad2.x) {
             posCode = 2;
+            arm.unlockIntake();
+        }
         else if (gamepad2.y)
             posCode = 3;
         else if (gamepad2.a)

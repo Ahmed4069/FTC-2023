@@ -5,11 +5,13 @@ import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.tel
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class Arm{
     DcMotor armLift1, armLift2, secArmLift1, secArmLift2;
+    Servo lock;
 
     Telemetry telemetry;
 
@@ -23,24 +25,10 @@ public class Arm{
     private final double secondArmLength = 8;
     private final double armHeight = 15.5;
 
-    double totalHeight = 0;
-
-    double averageAngleOfFirst = 0;
-    double averageAngleOfSecond = 0;
-
-    double firstArmheightFromGround = 0;
-    double secondArHeightFromGround = 0;
-
-    double ReachingheightofArm = 0;
-
-    double clearenceFromHighJunction = 00;
-
-    double lastPos = 0;
-
     public final int[][] requiredAnglesforClearence = {
             {0 , 0},        // front
             {0, 350},      // ground
-            {500, 300},     // medium
+            {500, 350},     // medium
             {500, 525}     // high
     };
 
@@ -55,11 +43,7 @@ public class Arm{
         armLift1.setDirection(DcMotorSimple.Direction.REVERSE);
         armLift1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-
-
         armLift2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
-
 
         secArmLift1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         secArmLift1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -74,6 +58,8 @@ public class Arm{
         secArmLift2.setTargetPosition(0);
         secArmLift2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
+        lock = hardwareMap.get(Servo.class, "lock");
+        lock.setPosition(1);
     }
 
 
@@ -81,10 +67,9 @@ public class Arm{
             moveFirstArm(FistSpeed);
             moveSecondArm(0.5, requiredAnglesforClearence[pos][1]);
 
-        telemetry.addData("Index of angle first arm: ", requiredAnglesforClearence[pos][0]);
-        telemetry.addData("Index of angle second arm: ", requiredAnglesforClearence[pos][1]);
-        telemetry.addData("Average of First: ", getAverageFirst());
-        telemetry.update();
+            telemetry.addData("Index of angle second arm: ", requiredAnglesforClearence[pos][1]);
+            telemetry.addData("Average of First: ", getAverageFirst());
+            telemetry.update();
     }
 
     public void moveFirstArm(double speed){
@@ -156,10 +141,7 @@ public class Arm{
             secArmLift1.setPower(speed);
             secArmLift2.setPower(speed);
         }
-
-
     }
-
 
     public void MoveManually(double firstSpeed, double SecondSpeed){
         armLift1.setPower(firstSpeed);
@@ -178,6 +160,13 @@ public class Arm{
     public void disable(){
         moveFirstArm(0);
         moveSecondArm(0,0);
+    }
+
+    public void lockIntake(){
+        lock.setPosition(1);
+    }
+    public void unlockIntake(){
+        lock.setPosition(0);
     }
 
 }
