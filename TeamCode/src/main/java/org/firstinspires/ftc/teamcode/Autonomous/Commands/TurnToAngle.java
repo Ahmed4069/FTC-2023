@@ -21,7 +21,7 @@ public class TurnToAngle extends Commands {
 
     @Override
     public void loop() {
-        robot.driveBase.setMotorPowers(-speed + sign, -speed + sign, speed +sign, speed + sign);
+        robot.driveBase.setMotorPowers(-speed + sign, -speed + sign, speed + sign, speed + sign);
     }
 
     @Override

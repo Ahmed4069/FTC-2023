@@ -162,11 +162,4 @@ public class Arm{
         moveSecondArm(0,0);
     }
 
-    public void lockIntake(){
-        lock.setPosition(1);
-    }
-    public void unlockIntake(){
-        lock.setPosition(0);
-    }
-
 }
