@@ -8,10 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Scheduler {
-    List<Commands> commands = new ArrayList<Commands>();
-    Telemetry telemetry;
-    private Robot robot;
-    boolean started = false;
+    private List<Commands> commands = new ArrayList<Commands>();
+    private Telemetry telemetry;
+    protected Robot robot;
+    public boolean started = false;
 
 
     public Scheduler(Robot robot, Telemetry telemetry){

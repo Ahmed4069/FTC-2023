@@ -16,8 +16,6 @@ public class CommandAuto extends LinearOpMode{
     Scheduler scheduler;
     SignalClassifier classifier;
 
-
-
     @Override
     public void runOpMode() {
         robot = new Robot(hardwareMap, telemetry);
@@ -27,41 +25,40 @@ public class CommandAuto extends LinearOpMode{
         scheduler.addCommand(new DriveToPosCommand(0.5, 3000));
         scheduler.addCommand(new TurnToAngle(0.5, 30));
         //lift Arm and intake
-        scheduler.addCommand(new TurnToAngle(0.5, -120));
+        scheduler.addCommand(new TurnToAngle(0.5, -90));
         scheduler.addCommand(new DriveToPosCommand(0.5, 1500));
-        scheduler.addCommand(new TurnToAngle(0.5, 90));
+        scheduler.addCommand(new TurnToAngle(0.5, 0));
         scheduler.addCommand(new DriveToPosCommand(0.5, 1000));
         scheduler.addCommand(new TurnToAngle(0.5, 90));
         scheduler.addCommand(new DriveToPosCommand(-0.5, 1000));
         //get cone from cone stack
         scheduler.addCommand(new DriveToPosCommand(0.5, 1500));
-        scheduler.addCommand(new TurnToAngle(0.5, -30));
+        scheduler.addCommand(new TurnToAngle(0.5, 60));
         scheduler.addCommand(new DriveToPosCommand(0.2, 100));
         //lift and deposit cone
 
-
+        
         waitForStart();
         String signal = classifier.classify();
         if(signal == "ConeSignal1"){
             scheduler.addCommand(new DriveToPosCommand(-0.5, 500));
-            scheduler.addCommand(new TurnToAngle(0.5, 30));
+            scheduler.addCommand(new TurnToAngle(0.5, 0));
             scheduler.addCommand(new DriveToPosCommand(-0.5, 1000));
             scheduler.addCommand(new TurnToAngle(0.5, -90));
             scheduler.addCommand(new DriveToPosCommand(0.5, 500));
         }
         else if (signal == "ConeSignal2"){
             scheduler.addCommand(new DriveToPosCommand(-0.5, 500));
-            scheduler.addCommand(new TurnToAngle(0.5, 30));
+            scheduler.addCommand(new TurnToAngle(0.5, 0));
             scheduler.addCommand(new DriveToPosCommand(-0.5, 1000));
         }
         else if (signal == "ConeSignal3"){
             scheduler.addCommand(new DriveToPosCommand(-0.5, 500));
-            scheduler.addCommand(new TurnToAngle(0.5, 30));
+            scheduler.addCommand(new TurnToAngle(0.5, 0));
             scheduler.addCommand(new DriveToPosCommand(-0.5, 1000));
             scheduler.addCommand(new TurnToAngle(0.5, 90));
             scheduler.addCommand(new DriveToPosCommand(0.5, 500));
         }
-        sleep(100);
 
         while(opModeIsActive() && scheduler.getListSize() != 0) {
             scheduler.run();
