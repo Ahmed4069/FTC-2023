@@ -36,14 +36,6 @@ public class DriveBase {
         motorRB = hardwareMap.get(DcMotorEx.class, "motorRB");
         motorLB = hardwareMap.get(DcMotorEx.class, "motorLB");
 
-        encL = hardwareMap.get(DcMotorEx.class, "motorRF");
-        encR = hardwareMap.get(DcMotorEx.class, "motorLF");
-
-        encL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        encR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-        encR.setDirection(DcMotorSimple.Direction.REVERSE);
-
         motorLF.setDirection(DcMotor.Direction.REVERSE);
         motorLB.setDirection(DcMotor.Direction.REVERSE);
 
@@ -52,12 +44,15 @@ public class DriveBase {
         motorLF.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         motorLB.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
+        motorRF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorLF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorRF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         motorLF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         motorRB.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         motorLB.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         gyro = new Gyro(hardwareMap);
+
 
     }
 
@@ -96,23 +91,20 @@ public class DriveBase {
         return gyro.getHeading();
     }
 
-//    public void runToPos(int encoderPulses) {
-//        last_position[0] =
-//        pid.setSetPoint(encoderPulses);
-//
-//    }
     public void print() {
-        telemetry.addData("left encoder", encL.getCurrentPosition());
-        telemetry.addData("right encoder", encR.getCurrentPosition());
-        telemetry.update();
+        telemetry.addData("left encoder", getLeftEncoderValue());
+        telemetry.addData("right encoder", getRightEncoderValue());
     }
 
     public void disable(){
         stop();
     }
 
-    public double getEncoder(){
-        return (motorRF.getCurrentPosition() + motorLF.getCurrentPosition()) / 2;
+    public int getLeftEncoderValue(){
+        return motorLF.getCurrentPosition();
     }
 
+    public int getRightEncoderValue(){
+        return motorRF.getCurrentPosition();
+    }
 }

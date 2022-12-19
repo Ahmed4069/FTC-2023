@@ -27,7 +27,7 @@ public class Autonomous extends LinearOpMode {
             position.println();                             // elevator higher motors encoder
 *//*
 
-            position.close();gmai
+            position.close();
 *//*
             telemetry.addLine("robot positions saved");
             telemetry.update();

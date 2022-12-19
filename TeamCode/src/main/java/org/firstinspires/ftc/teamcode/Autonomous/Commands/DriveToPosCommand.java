@@ -4,7 +4,7 @@ package org.firstinspires.ftc.teamcode.Autonomous.Commands;
 public class DriveToPosCommand extends Commands {
     private double speed;
     public double desiredPosition;
-    private double initialPosition;
+    private int initialLeft, initialRight;
 
     public DriveToPosCommand (double speed, double desiredPosition){
         this.speed = speed;
@@ -13,18 +13,19 @@ public class DriveToPosCommand extends Commands {
 
     @Override
     public void start(){
-        this.initialPosition = robot.driveBase.getEncoder();
+        this.initialLeft = robot.driveBase.getLeftEncoderValue();
+        this.initialRight = robot.driveBase.getRightEncoderValue();
     }
 
     @Override
     public void loop() {
         robot.driveBase.setMotorPowers(speed, speed, speed, speed);
-        telemetry.addData("Desired Position", desiredPosition);
-        telemetry.addData("Starting Position", initialPosition);
+
     }
 
     @Override
     public boolean isFinsihed() {
-        return Math.abs(desiredPosition - initialPosition) < Math.abs(robot.driveBase.getHeading());
+        telemetry.addData("position", (robot.driveBase.getLeftEncoderValue() + robot.driveBase.getRightEncoderValue() - (this.initialLeft + this.initialRight)));
+        return this.desiredPosition - (robot.driveBase.getLeftEncoderValue() + robot.driveBase.getRightEncoderValue() - (this.initialLeft + this.initialRight)) / 2 < 100;
     }
 }

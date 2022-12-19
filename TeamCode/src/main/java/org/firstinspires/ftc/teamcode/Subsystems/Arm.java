@@ -58,8 +58,8 @@ public class Arm{
         secArmLift2.setTargetPosition(0);
         secArmLift2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        lock = hardwareMap.get(Servo.class, "lock");
-        lock.setPosition(1);
+//        lock = hardwareMap.get(Servo.class, "lock");
+//        lock.setPosition(1);
     }
 
 
@@ -162,11 +162,11 @@ public class Arm{
         moveSecondArm(0,0);
     }
 
-    public void lockIntake(){
-        lock.setPosition(1);
-    }
-    public void unlockIntake(){
-        lock.setPosition(0);
-    }
+//    public void lockIntake(){
+//        lock.setPosition(1);
+//    }
+//    public void unlockIntake(){
+//        lock.setPosition(0);
+//    }
 
 }
