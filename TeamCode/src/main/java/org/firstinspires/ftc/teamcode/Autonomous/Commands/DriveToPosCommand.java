@@ -5,10 +5,12 @@ public class DriveToPosCommand extends Commands {
     private double speed;
     public double desiredPosition;
     private int initialLeft, initialRight;
+    public double straightAngle;
 
     public DriveToPosCommand (double speed, double desiredPosition){
         this.speed = speed;
         this.desiredPosition = desiredPosition;
+        this.straightAngle = robot.gyro.getHeading();
     }
 
     @Override
@@ -19,8 +21,10 @@ public class DriveToPosCommand extends Commands {
 
     @Override
     public void loop() {
-        robot.driveBase.setMotorPowers(speed, speed, speed, speed);
+        double leftSpeed = speed - ((robot.gyro.getHeading() - straightAngle) * 0.2);
+        double rightSpeed = speed + ((robot.gyro.getHeading() - straightAngle) * 0.2);
 
+        robot.driveBase.setMotorPowers(leftSpeed, leftSpeed, rightSpeed, rightSpeed);
     }
 
     @Override
