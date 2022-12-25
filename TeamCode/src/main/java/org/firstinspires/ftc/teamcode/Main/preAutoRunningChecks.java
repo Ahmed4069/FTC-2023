@@ -34,6 +34,7 @@ public class preAutoRunningChecks {
 
     public boolean isRobotPrepared(){
         if(gyroParams && intakePlugs && driveMotors && armEncoder1 && armEncoder2 && IsClassificationLoaded){
+            robotIsReady = true;
             return true;
         }
         else{

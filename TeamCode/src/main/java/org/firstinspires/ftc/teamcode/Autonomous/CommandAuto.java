@@ -39,16 +39,20 @@ public class CommandAuto extends LinearOpMode{
         //lift and deposit cone
 
         check = new preAutoRunningChecks(robot, telemetry, classifier);
+
         waitForStart();
 
         check.checkForErrors();
+
         if(check.isRobotPrepared() == true || check.robotIsReady){
             clearToStartAuto = true;
         }
 
-
         if(clearToStartAuto){
             String signal = classifier.classify();
+
+            robot.system.printString("Signal: ", signal);
+
             if(signal == "ConeSignal1"){
                 scheduler.addCommand(new DriveToPosCommand(-0.5, 500));
                 scheduler.addCommand(new TurnToAngle(0.5, 0));

@@ -29,6 +29,8 @@ public class teleOp extends OpMode {
 
     boolean manualOverrideActive = false;
 
+    System system;
+
     @Override
     public void init(){
         mode = RobotMode.TELEOP_STARTING;
@@ -50,6 +52,8 @@ public class teleOp extends OpMode {
             telemetry.addLine(e.getMessage());
             telemetry.update();
         }
+
+        system = new System(telemetry);
     }
 
     @Override
@@ -61,15 +65,6 @@ public class teleOp extends OpMode {
         rx = gamepad1.right_stick_x;
 
         m_drive.driveByControls(x, y, rx);
-
-        //encoder.getCoordinates();
-
-        //telemetry.addData("Last Bot Heading", m_drive.getHeading());;
-        //telemetry.addData("x: ", m_drive.position[0]);
-        //telemetry.addData("y: ", m_drive.position[1]);
-
-//        telemetry.update();
-
 
         //Minor changes done to support Field Oriented
 
@@ -87,18 +82,12 @@ public class teleOp extends OpMode {
             posCode = 0;
 
         arm.moveArmToHeightOfJunction(posCode, gamepad2.right_stick_y);
-        //arm.MoveManually(gamepad2.right_stick_y, gamepad2.left_stick_y);
-        //telemetry.addData("Average: ", arm.getAverageFirst());
-        //else if(manualOverrideActive)
-        //arm.MoveManually(gamepad2.right_stick_y, gamepad2.left_stick_y);
 
-        //arm.MoveManually(gamepad2.right_stick_y, gamepad2.left_stick_y);
-        //telemetry.addData("Height of Arm From Ground", arm.getHeightFromEncoders());
+        if (gamepad2.left_bumper){
+            arm.moveSecondArmToHeightOfStacks();
+            system.printInt("Number of Cones remaining", arm.numberOfRemainingCones);
+        }
 
-
-        //telemetry.addData("Last Encoder Pos", Lifter.getLastEncoderPos());
-        //telemetry.addData("Currently Encoder Pos", Lifter.getCurrentPos());
-//        telemetry.update();
 
         //intake
         intake.setServo(-gamepad2.left_stick_y);
