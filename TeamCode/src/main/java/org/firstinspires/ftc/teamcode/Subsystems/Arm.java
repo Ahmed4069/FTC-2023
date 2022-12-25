@@ -32,6 +32,9 @@ public class Arm{
             {500, 525}     // high
     };
 
+    public boolean issueWithPorts = false;
+    public boolean issueWithEncoder = false;
+
 
     public Arm (HardwareMap hardwareMap, Telemetry tele){
         armLift1 = hardwareMap.get(DcMotor.class, "lift1");
@@ -161,5 +164,39 @@ public class Arm{
         moveFirstArm(0);
         moveSecondArm(0,0);
     }
+
+    public boolean checkFirstArm(){
+        if(getAverageFirst() == 0){
+            if(armLift2.getPortNumber() == 1 && armLift1.getPortNumber() == 0){
+                return true;
+            }
+            else{
+                issueWithPorts = true;
+                return false;
+            }
+        }
+        else{
+            issueWithEncoder = true;
+            return false;
+        }
+    }
+
+    public boolean checkSecondArm(){
+        if(getAverageSecond() == 0){
+
+            if(secArmLift2.getPortNumber() == 3 && secArmLift1.getPortNumber() == 2){
+                return true;
+            }
+            else{
+                issueWithPorts = true;
+                return false;
+            }
+        }
+        else{
+            issueWithEncoder = true;
+            return false;
+        }
+    }
+
 
 }

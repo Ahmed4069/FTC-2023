@@ -67,9 +67,11 @@ public class SignalClassifier {
      * if you're curious): no knowledge of multi-threading is needed here. */
     private Handler callbackHandler;
 
-    ImageClassifier model;
+    private ImageClassifier model;
 
-    Telemetry telemetry;
+    private Telemetry telemetry;
+
+    public static boolean isClassificationLoaded = false;
 
     //----------------------------------------------------------------------------------------------
     // SignalClassifier constructor
@@ -89,6 +91,7 @@ public class SignalClassifier {
 
         telemetry.addData("classification", "loaded");
         telemetry.update();
+        isClassificationLoaded = true;
     }
 
     private void loadModel() {
@@ -245,4 +248,11 @@ public class SignalClassifier {
         telemetry.log().add(format, args);
         telemetry.update();
     }
+
+    public void resetClassification(){
+        loadModel();
+        openCamera();
+        startCamera();
+    }
+
 }

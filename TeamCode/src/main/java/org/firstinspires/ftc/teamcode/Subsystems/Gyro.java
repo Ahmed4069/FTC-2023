@@ -3,8 +3,10 @@ package org.firstinspires.ftc.teamcode.Subsystems;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+
 public class Gyro {
-    BNO055IMU imu;
+    public BNO055IMU imu;
     double lastHeading = 0;
 
     public Gyro(HardwareMap hardwareMap){
@@ -15,11 +17,15 @@ public class Gyro {
     }
 
     public double getHeading(){
-        lastHeading = imu.getAngularOrientation().firstAngle;
         return imu.getAngularOrientation().firstAngle;
     }
 
-    public double getLastHeading(){
-        return lastHeading;
+    public boolean checkParams(){
+        if(imu.isGyroCalibrated()){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 }

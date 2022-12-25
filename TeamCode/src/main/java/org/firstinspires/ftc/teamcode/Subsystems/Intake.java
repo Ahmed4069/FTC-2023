@@ -9,6 +9,8 @@ public class Intake {
     CRServo servo1, servo2;
     Servo lock;
 
+    public boolean issueWithPorts = false, issueWithLock = false;
+
     public Intake(HardwareMap hardwareMap){
         servo1 = hardwareMap.get(CRServo.class, "intakeLeft");
         servo2 = hardwareMap.get(CRServo.class, "intakeRight");
@@ -33,5 +35,21 @@ public class Intake {
     }
     public void unlock(){
         lock.setPosition(0);
+    }
+
+    public boolean checkServo(){
+        if (servo1.getPortNumber() == 0 && servo2.getPortNumber() == 1) {
+            if(lock.getPosition() == 1){
+                return true;
+            }
+            else{
+                issueWithLock = true;
+                return false;
+            }
+        }
+        else{
+            issueWithPorts = true;
+            return false;
+        }
     }
 }

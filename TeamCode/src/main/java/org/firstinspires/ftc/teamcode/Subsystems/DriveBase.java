@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.Main.Constants;
 
 public class DriveBase {
     // define the hardware
@@ -27,6 +28,11 @@ public class DriveBase {
     PIDController pid = new PIDController(kP, kI, kD);
 
     Telemetry telemetry;
+
+    private Constants constants;
+
+    public boolean encodersClear = false;
+    public boolean portsClear = false;
 
     public DriveBase(HardwareMap hardwareMap, Telemetry tele) {
         telemetry = tele;
@@ -52,8 +58,6 @@ public class DriveBase {
         motorLB.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         gyro = new Gyro(hardwareMap);
-
-
     }
 
     public void setMotorPowers(double p_lf, double p_lb, double p_rf, double p_rb) {
@@ -106,5 +110,21 @@ public class DriveBase {
 
     public int getRightEncoderValue(){
         return motorRF.getCurrentPosition();
+    }
+
+    public boolean driveBaseCheck(){
+        if(getLeftEncoderValue() == 0 && getRightEncoderValue() == 0){
+            encodersClear = true;
+            if(motorRF.getPortNumber() == Constants.motorRfPort && motorLF.getPortNumber() == Constants.motorLfPort && motorRB.getPortNumber() == Constants.motorRbPort && motorLB.getPortNumber() == Constants.motorLbPort){
+                portsClear = true;
+            }
+        }
+
+        if (portsClear && encodersClear){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 }

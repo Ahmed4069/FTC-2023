@@ -26,6 +26,7 @@ public class Scheduler {
     public void setCommands(int index, Commands command){
         commands.add(index, command);
     }
+
     public int getListSize(){
         return commands.size();
     }
