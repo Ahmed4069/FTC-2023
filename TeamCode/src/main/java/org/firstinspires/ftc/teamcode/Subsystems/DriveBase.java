@@ -87,6 +87,13 @@ public class DriveBase {
         setMotorPowers(powerLF, powerLB, powerRF, powerRB);
     }
 
+    public void driveByTrigger(double speed){
+        double leftPower = speed + (getHeading() * 0.2);
+        double rightPower = speed - (getHeading() * 0.2);
+
+        setMotorPowers(leftPower, leftPower, rightPower, rightPower);
+    }
+
     public void stop() {
         setMotorPowers(0, 0, 0, 0);
     }

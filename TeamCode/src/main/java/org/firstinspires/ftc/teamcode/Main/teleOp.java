@@ -23,7 +23,7 @@ public class teleOp extends OpMode {
 
     RobotMode mode;
 
-    double y, x, rx;
+    double y, x, rx, triggers;
 
     int posCode = 0;
 
@@ -63,11 +63,12 @@ public class teleOp extends OpMode {
         y = -gamepad1.left_stick_y;
         x = gamepad1.left_stick_x * 1.1;
         rx = gamepad1.right_stick_x;
+        triggers = gamepad1.left_trigger - gamepad1.right_trigger;
 
         m_drive.driveByControls(x, y, rx);
+        m_drive.driveByTrigger(triggers);
 
         //Minor changes done to support Field Oriented
-
         if (gamepad2.b) {
             posCode = 1;
             // intake.lock();
