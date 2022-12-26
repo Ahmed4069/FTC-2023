@@ -52,4 +52,8 @@ public class Intake {
             return false;
         }
     }
+
+    public double getSpeed(){
+        return (servo1.getPower() + servo2.getPower()) / 2;
+    }
 }

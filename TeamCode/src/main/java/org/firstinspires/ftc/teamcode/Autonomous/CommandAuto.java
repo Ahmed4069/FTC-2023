@@ -4,6 +4,8 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.Autonomous.Commands.DriveToPosCommand;
+import org.firstinspires.ftc.teamcode.Autonomous.Commands.IntakeOff;
+import org.firstinspires.ftc.teamcode.Autonomous.Commands.IntakeOn;
 import org.firstinspires.ftc.teamcode.Autonomous.Commands.TurnToAngle;
 import org.firstinspires.ftc.teamcode.Main.Robot.Robot;
 import org.firstinspires.ftc.teamcode.Main.preAutoRunningChecks;
@@ -25,7 +27,11 @@ public class CommandAuto extends LinearOpMode{
 
         scheduler.addCommand(new DriveToPosCommand(0.5, 3000));
         scheduler.addCommand(new TurnToAngle(0.5, 30));
-        //lift Arm and intake
+        //lift Arm
+        //arm = x
+        scheduler.addCommand(new IntakeOn(IntakeOn.Use.OUT));
+        scheduler.addCommand(new IntakeOff());
+        //arm down
         scheduler.addCommand(new TurnToAngle(0.5, -90));
         scheduler.addCommand(new DriveToPosCommand(0.5, 1500));
         scheduler.addCommand(new TurnToAngle(0.5, 0));
@@ -33,10 +39,14 @@ public class CommandAuto extends LinearOpMode{
         scheduler.addCommand(new TurnToAngle(0.5, 90));
         scheduler.addCommand(new DriveToPosCommand(-0.5, 1000));
         //get cone from cone stack
+        scheduler.addCommand(new IntakeOn(IntakeOn.Use.IN));
+        scheduler.addCommand(new IntakeOff());
+
         scheduler.addCommand(new DriveToPosCommand(0.5, 1500));
         scheduler.addCommand(new TurnToAngle(0.5, 60));
         scheduler.addCommand(new DriveToPosCommand(0.2, 100));
         //lift and deposit cone
+        scheduler.addCommand(new IntakeOn(IntakeOn.Use.OUT));
 
         check = new preAutoRunningChecks(robot, telemetry, classifier);
 
