@@ -32,6 +32,18 @@ public class Arm{
             {500, 525}     // high
     };
 
+    public final int[] requiredAnglesForStacks = {
+            350,
+            360,
+            370,
+            380,
+            390
+    };
+    public int numberOfRemainingCones = 5;
+
+    public boolean issueWithPorts = false;
+    public boolean issueWithEncoder = false;
+
 
     public Arm (HardwareMap hardwareMap, Telemetry tele){
         armLift1 = hardwareMap.get(DcMotor.class, "lift1");
@@ -72,7 +84,14 @@ public class Arm{
             telemetry.update();
     }
 
-    public void moveFirstArm(double speed){
+    public void moveSecondArmToHeightOfStacks(){
+        if(numberOfRemainingCones != 0){
+            moveSecondArm(0.5, requiredAnglesForStacks[numberOfRemainingCones - 1]);
+            numberOfRemainingCones--;
+        }
+    }
+
+    private void moveFirstArm(double speed){
         //double max = Math.max(Math.abs(speed), 0.2);
         armLift1.setPower(-speed);
         armLift2.setPower(-speed);
@@ -130,7 +149,7 @@ public class Arm{
 
     }
 
-    public void moveSecondArm(double speed, int angle){
+    private void moveSecondArm(double speed, int angle){
         secArmLift1.setTargetPosition(angle);
         secArmLift2.setTargetPosition(angle);
         if (angle > getAverageSecond()){
@@ -161,5 +180,39 @@ public class Arm{
         moveFirstArm(0);
         moveSecondArm(0,0);
     }
+
+    public boolean checkFirstArm(){
+        if(getAverageFirst() == 0){
+            if(armLift2.getPortNumber() == 1 && armLift1.getPortNumber() == 0){
+                return true;
+            }
+            else{
+                issueWithPorts = true;
+                return false;
+            }
+        }
+        else{
+            issueWithEncoder = true;
+            return false;
+        }
+    }
+
+    public boolean checkSecondArm(){
+        if(getAverageSecond() == 0){
+
+            if(secArmLift2.getPortNumber() == 3 && secArmLift1.getPortNumber() == 2){
+                return true;
+            }
+            else{
+                issueWithPorts = true;
+                return false;
+            }
+        }
+        else{
+            issueWithEncoder = true;
+            return false;
+        }
+    }
+
 
 }

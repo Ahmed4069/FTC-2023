@@ -23,11 +23,13 @@ public class teleOp extends OpMode {
 
     RobotMode mode;
 
-    double y, x, rx;
+    double y, x, rx, triggers;
 
     int posCode = 0;
 
     boolean manualOverrideActive = false;
+
+    System system;
 
     @Override
     public void init(){
@@ -50,6 +52,8 @@ public class teleOp extends OpMode {
             telemetry.addLine(e.getMessage());
             telemetry.update();
         }
+
+        system = new System(telemetry);
     }
 
     @Override
@@ -59,20 +63,12 @@ public class teleOp extends OpMode {
         y = -gamepad1.left_stick_y;
         x = gamepad1.left_stick_x * 1.1;
         rx = gamepad1.right_stick_x;
+        triggers = gamepad1.left_trigger - gamepad1.right_trigger;
 
         m_drive.driveByControls(x, y, rx);
-
-        //encoder.getCoordinates();
-
-        //telemetry.addData("Last Bot Heading", m_drive.getHeading());;
-        //telemetry.addData("x: ", m_drive.position[0]);
-        //telemetry.addData("y: ", m_drive.position[1]);
-
-//        telemetry.update();
-
+        m_drive.driveByTrigger(triggers);
 
         //Minor changes done to support Field Oriented
-
         if (gamepad2.b) {
             posCode = 1;
             // intake.lock();
@@ -87,18 +83,12 @@ public class teleOp extends OpMode {
             posCode = 0;
 
         arm.moveArmToHeightOfJunction(posCode, gamepad2.right_stick_y);
-        //arm.MoveManually(gamepad2.right_stick_y, gamepad2.left_stick_y);
-        //telemetry.addData("Average: ", arm.getAverageFirst());
-        //else if(manualOverrideActive)
-        //arm.MoveManually(gamepad2.right_stick_y, gamepad2.left_stick_y);
 
-        //arm.MoveManually(gamepad2.right_stick_y, gamepad2.left_stick_y);
-        //telemetry.addData("Height of Arm From Ground", arm.getHeightFromEncoders());
+        if (gamepad2.left_bumper){
+            arm.moveSecondArmToHeightOfStacks();
+            system.printInt("Number of Cones remaining", arm.numberOfRemainingCones);
+        }
 
-
-        //telemetry.addData("Last Encoder Pos", Lifter.getLastEncoderPos());
-        //telemetry.addData("Currently Encoder Pos", Lifter.getCurrentPos());
-//        telemetry.update();
 
         //intake
         intake.setServo(-gamepad2.left_stick_y);
