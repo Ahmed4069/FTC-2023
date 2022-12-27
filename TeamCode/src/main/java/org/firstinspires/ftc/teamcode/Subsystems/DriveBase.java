@@ -21,11 +21,6 @@ public class DriveBase {
     private double lastForwardPos = 0, lastSidewaysPos = 0;
     public double[] last_position = {0, 0};
 
-    double kP = 1;
-    double kI = 0;
-    double kD = 0;
-    PIDController pid = new PIDController(kP, kI, kD);
-
     Telemetry telemetry;
 
     public DriveBase(HardwareMap hardwareMap, Telemetry tele) {
@@ -81,6 +76,10 @@ public class DriveBase {
         double powerRB = (rotY + rotX - rx) / denominator;
 
         setMotorPowers(powerLF, powerLB, powerRF, powerRB);
+    }
+
+    public void tankDrive(double left, double right) {
+        setMotorPowers(left, left, right, right);
     }
 
     public void stop() {

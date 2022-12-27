@@ -14,8 +14,8 @@ public class Intake {
         servo2 = hardwareMap.get(CRServo.class, "intakeRight");
         servo2.setDirection(DcMotorSimple.Direction.REVERSE);
 
-        lock = hardwareMap.get(Servo.class, "lock");
-        lock.setPosition(1);
+//        lock = hardwareMap.get(Servo.class, "lock");
+//        lock.setPosition(1);
     }
 
     public void setServo(double speed){
@@ -28,10 +28,10 @@ public class Intake {
         servo2.setPower(0);
     }
 
-    public void lock(){
-        lock.setPosition(1);
-    }
-    public void unlock(){
-        lock.setPosition(0);
-    }
+//    public void lock(){
+//        lock.setPosition(1);
+//    }
+//    public void unlock(){
+//        lock.setPosition(0);
+//    }
 }

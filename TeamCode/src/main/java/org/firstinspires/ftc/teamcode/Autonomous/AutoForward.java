@@ -19,7 +19,7 @@ public class AutoForward extends LinearOpMode{
         robot = new Robot(hardwareMap, telemetry);
         scheduler = new Scheduler(robot, telemetry);
 
-        scheduler.addCommand(new DriveToPosCommand(0.5, 10000));
+        scheduler.addCommand(new DriveToPosCommand(0.5, 30000));
 
         waitForStart();
 
