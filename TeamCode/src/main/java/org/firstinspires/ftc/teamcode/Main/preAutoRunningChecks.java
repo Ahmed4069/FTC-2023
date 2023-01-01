@@ -72,14 +72,14 @@ public class preAutoRunningChecks {
                 telemetry.log().add("Arm Motor 2 Configuration Error Found. Please Fix");
             }
         }
-        if(!intakePlugs){
-            if(!robot.intake.issueWithLock){
-                robot.intake.unlock();
-            }
-            if(!robot.intake.issueWithPorts){
-                telemetry.log().add("Servo Configuration Error Found. Please Fix");
-            }
-        }
+//        if(!intakePlugs){
+//            if(!robot.intake.issueWithLock){
+//                robot.intake.unlock();
+//            }
+//            if(!robot.intake.issueWithPorts){
+//                telemetry.log().add("Servo Configuration Error Found. Please Fix");
+//            }
+//        }
         if(!IsClassificationLoaded){
             telemetry.log().add("Classification Not Loaded. Resetting classifier. This WILL cause a delay");
             classifier.resetClassification();

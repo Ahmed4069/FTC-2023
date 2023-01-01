@@ -8,12 +8,12 @@ import java.util.Timer;
 public class DriveToPosCommand extends Commands {
     private double speed;
     public int desiredPosition;
-    private int initialLeft, initialRight;
+    private int initialPos;
     public double straightAngle;
 
-    private double kP = 0.01, kI = 0, kD = 0;
-    private int Ileft = 0, Iright = 0;
-    private int lasterrorleft, lasterrorright;
+    private double kP = 0.000775, kI = 0, kD = 0.0001;
+    private int I = 0;
+    private int lasterror;
 
     ElapsedTime timer = new ElapsedTime();
 
@@ -24,49 +24,42 @@ public class DriveToPosCommand extends Commands {
 
     @Override
     public void start(){
-        this.initialLeft = robot.driveBase.getLeftEncoderValue();
-        this.initialRight = robot.driveBase.getRightEncoderValue();
+        this.initialPos = robot.driveBase.getLeftEncoderValue();
+//        this.initialRight = robot.driveBase.getRightEncoderValue();
 
-        this.lasterrorleft = this.desiredPosition;
-        this.lasterrorright = this.desiredPosition;
+        this.lasterror = this.desiredPosition;
+//        this.lasterrorright = this.desiredPosition;
 
         this.straightAngle = robot.gyro.getHeading();
     }
 
     @Override
     public void loop() {
-        int curleft = robot.driveBase.getLeftEncoderValue() - this.initialLeft,
-            curright = robot.driveBase.getRightEncoderValue() - this.initialRight;
+        int cur = robot.driveBase.getLeftEncoderValue() - this.initialPos;
+        int error = this.desiredPosition - cur;
 
-        int errorleft = this.desiredPosition - curleft,
-            errorright = this.desiredPosition - curright;
+        I += error * timer.seconds();
+        double d = (error - lasterror) / timer.seconds();
 
-        Ileft += errorleft * timer.seconds();
-        Iright += errorright * timer.seconds();
-
-        double d_l = (errorleft - lasterrorleft) * timer.seconds(),
-               d_r = (errorright - lasterrorright) * timer.seconds();
-
-        lasterrorleft = errorleft;
-        lasterrorright = errorright;
-
+        lasterror = error;
         timer.reset();
 
-        robot.driveBase.tankDrive((errorright * kP) + (d_r * kD) + (Iright * kI),
-                                  (errorleft * kP) + (d_l * kD) + (Ileft * kI));
+        double power = Math.max(Math.min((error * kP) + (d * kD) + (I * kI), 1), -1) * 0.75;
+        robot.driveBase.tankDrive(power + wrapAround(robot.gyro.getHeading(), straightAngle) * 0.55,
+                                 power - wrapAround(robot.gyro.getHeading(), straightAngle) * 0.55);
 
-//        double leftSpeed = speed - ((robot.gyro.getHeading() - straightAngle) * 0.2);
-//        double rightSpeed = speed + ((robot.gyro.getHeading() - straightAngle) * 0.2);
-//
-//        robot.driveBase.setMotorPowers(leftSpeed, leftSpeed, rightSpeed, rightSpeed);
-        telemetry.addData("left: ", curleft);
-        telemetry.addData("right:", curright);
+        telemetry.addData("distance", error);
+        telemetry.addData("angle", wrapAround(robot.gyro.getHeading(), straightAngle));
+    }
+
+    // not sure if this works for all angles yet
+    public double wrapAround(double angle_cur, double angle_tar) {
+        double angle = angle_cur - angle_tar;
+        return Math.abs(angle) > Math.PI? (Math.PI - Math.abs(angle)) * Math.signum(angle) : angle;
     }
 
     @Override
     public boolean isFinsihed() {
-//        telemetry.addData("position", (robot.driveBase.getLeftEncoderValue() + robot.driveBase.getRightEncoderValue() - (this.initialLeft + this.initialRight)));
-//        return Math.abs(this.desiredPosition - (robot.driveBase.getLeftEncoderValue() + robot.driveBase.getRightEncoderValue() - (this.initialLeft + this.initialRight)) / 2) < 100;
-        return false;
+        return Math.abs(this.desiredPosition - (robot.driveBase.getLeftEncoderValue() - this.initialPos)) < 50;
     }
 }
