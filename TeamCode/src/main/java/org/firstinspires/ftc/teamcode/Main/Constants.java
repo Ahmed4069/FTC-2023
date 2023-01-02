@@ -12,4 +12,7 @@ public class Constants {
     public static final byte motorLfPort = 1;
     public static final byte motorRbPort = 2;
     public static final byte motorLbPort = 3;
+
+    public static final double encoderToFeetConstant = 0.000054784907761;
+    public static final double encoderToInchesConstant = 0.00065741889313;
 }
