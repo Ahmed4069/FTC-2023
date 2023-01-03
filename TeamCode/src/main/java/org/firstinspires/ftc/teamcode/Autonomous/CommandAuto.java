@@ -8,7 +8,6 @@ import org.firstinspires.ftc.teamcode.Autonomous.Commands.IntakeOff;
 import org.firstinspires.ftc.teamcode.Autonomous.Commands.IntakeOn;
 import org.firstinspires.ftc.teamcode.Autonomous.Commands.TurnToAngle;
 import org.firstinspires.ftc.teamcode.Main.Robot.Robot;
-import org.firstinspires.ftc.teamcode.Main.preAutoRunningChecks;
 import org.firstinspires.ftc.teamcode.Vision.SignalClassifier;
 
 @Autonomous
@@ -16,7 +15,6 @@ public class CommandAuto extends LinearOpMode{
     Robot robot;
     Scheduler scheduler;
     SignalClassifier classifier;
-    preAutoRunningChecks check;
     boolean clearToStartAuto = false;
 
     @Override
@@ -48,15 +46,9 @@ public class CommandAuto extends LinearOpMode{
         //lift and deposit cone
         scheduler.addCommand(new IntakeOn(IntakeOn.Use.OUT));
 
-        check = new preAutoRunningChecks(robot, telemetry, classifier);
 
         waitForStart();
 
-        check.checkForErrors();
-
-        if(check.isRobotPrepared() == true || check.robotIsReady){
-            clearToStartAuto = true;
-        }
 
         if(clearToStartAuto){
             String signal = classifier.classify();

@@ -66,7 +66,7 @@ public class teleOp extends OpMode {
         triggers = gamepad1.left_trigger - gamepad1.right_trigger;
 
         m_drive.driveByControls(x, y, rx);
-        m_drive.driveByTrigger(triggers);
+//        m_drive.driveByTrigger(triggers);
 
         //Minor changes done to support Field Oriented
         if (gamepad2.b) {

@@ -1,11 +1,18 @@
 package org.firstinspires.ftc.teamcode.Autonomous.Commands;
 
+import com.qualcomm.robotcore.util.ElapsedTime;
+
 public class TurnToAngle extends Commands {
     private double currentAngle;
     public double desiredAngle;
     private double angDeg;
     private double speed;
     private double sign;
+
+    ElapsedTime timer = new ElapsedTime();
+
+    double I = 0, lasterror;
+    double kP = 1, kD = 0, kI = 0;
 
     public TurnToAngle(double speed, double desiredAngle){
         this.desiredAngle = desiredAngle;
@@ -14,18 +21,33 @@ public class TurnToAngle extends Commands {
 
     @Override
     public void start() {
-        this.currentAngle = robot.gyro.getHeading();
-        angDeg = Math.toDegrees(currentAngle);
-        sign = Math.signum(desiredAngle - angDeg);
+        lasterror = wrapAround(this.desiredAngle, robot.gyro.getHeading());
     }
 
     @Override
     public void loop() {
-        robot.driveBase.setMotorPowers(-speed + sign, -speed + sign, speed + sign, speed + sign);
+        double error = wrapAround(this.desiredAngle, robot.gyro.getHeading());
+
+        I += error * timer.seconds();
+        double d = (error - lasterror) / timer.seconds();
+
+        lasterror = error;
+        timer.reset();
+
+        double power = (error * kP) + (d * kD) + (I * kI);
+        telemetry.addData("error is ", error);
+        telemetry.addData("power is ", power);
+        robot.driveBase.tankDrive(-power, power);
+    }
+
+    // not sure if this works for all angles yet
+    public double wrapAround(double angle_cur, double angle_tar) {
+        double angle = angle_cur - angle_tar;
+        return Math.abs(angle) > Math.PI? (Math.PI - Math.abs(angle)) * Math.signum(angle) : angle;
     }
 
     @Override
     public boolean isFinsihed() {
-        return Math.abs(robot.gyro.getHeading()) < 2.5;
+        return false;
     }
 }

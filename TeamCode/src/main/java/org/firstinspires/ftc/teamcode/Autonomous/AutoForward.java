@@ -20,6 +20,7 @@ public class AutoForward extends LinearOpMode{
         scheduler = new Scheduler(robot, telemetry);
 
         scheduler.addCommand(new DriveToPosCommand(0.5, 40000));
+        scheduler.addCommand(new TurnToAngle(0.5, -Math.PI / 4));
 
         waitForStart();
 
