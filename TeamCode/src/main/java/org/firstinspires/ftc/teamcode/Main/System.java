@@ -24,4 +24,16 @@ public class System {
     public void printBoolean(String label, boolean msg){
         telemetry.addData(label, msg);
     }
+
+    public double convertUnits (double value, Units unit){
+        if (unit == Units.INCHES) return value / Constants.encoderToInchesConstant;
+        else return value / Constants.encoderToFeetConstant;
+    }
+
+    public enum Units{
+        INCHES,
+        FEET
+    }
 }
+
+
