@@ -53,7 +53,7 @@ public class CommandAuto extends LinearOpMode{
         if(clearToStartAuto){
             String signal = classifier.classify();
 
-            robot.system.printString("Signal: ", signal);
+            robot.System.printString("Signal: ", signal);
 
             if(signal == "ConeSignal1"){
                 scheduler.addCommand(new DriveToPosCommand(-0.5, 500));

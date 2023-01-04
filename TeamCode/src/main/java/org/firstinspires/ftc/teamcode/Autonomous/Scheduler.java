@@ -32,7 +32,7 @@ public class Scheduler {
     }
 
     public void run(){
-        robot.system.printInt("Amount of commands", getListSize());
+        robot.System.printInt("Amount of commands", getListSize());
 
         if(getListSize() != 0){
             Commands nextCommand = commands.get(0);
@@ -46,7 +46,7 @@ public class Scheduler {
             if (nextCommand.isFinsihed()){
                 robot.driveBase.disable();
                 commands.remove(0);
-                robot.system.printString("Command", "removed");
+                robot.System.printString("Command", "removed");
                 telemetry.update();
                 if(commands.size() != 0) {
                     commands.get(0).start();

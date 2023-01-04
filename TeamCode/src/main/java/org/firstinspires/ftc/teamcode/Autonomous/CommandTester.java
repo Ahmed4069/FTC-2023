@@ -38,6 +38,7 @@ public class CommandTester extends LinearOpMode{
         telemetry.update();
 
         while (opModeIsActive()) {
+
         }
 
     }

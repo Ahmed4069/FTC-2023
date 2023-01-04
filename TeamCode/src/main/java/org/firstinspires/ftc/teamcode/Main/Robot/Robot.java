@@ -16,14 +16,14 @@ public class Robot {
     public Intake intake;
     public Arm arm;
     public Gyro gyro;
-    public System system;
+    public System System;
 
     public Robot(HardwareMap hardwareMap, Telemetry tele){
         driveBase = new DriveBase(hardwareMap, tele);
         intake = new Intake(hardwareMap);
         arm = new Arm(hardwareMap, tele);
         gyro = new Gyro(hardwareMap);
-        system = new System(tele);
+        System = new System(tele);
     }
 
     public void disable(){

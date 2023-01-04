@@ -24,11 +24,11 @@ public class RaiseArm extends Commands {
 
     @Override
     public void loop() {
-
+        robot.arm.moveArmToHeightOfJunction(desired_height);
     }
 
     @Override
     public boolean isFinsihed() {
-        return false;
+        return robot.arm.getAverageFirst() < robot.arm.requiredAnglesforClearence[desired_height][0] - 50;
     }
 }

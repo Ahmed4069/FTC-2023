@@ -44,6 +44,7 @@ public class Arm{
     public boolean issueWithPorts = false;
     public boolean issueWithEncoder = false;
 
+    public static int lastIndex = 0;
 
     public Arm (HardwareMap hardwareMap, Telemetry tele){
         armLift1 = hardwareMap.get(DcMotor.class, "lift1");
@@ -52,10 +53,15 @@ public class Arm{
         secArmLift2 = hardwareMap.get(DcMotor.class, "secArm2");
         telemetry = tele;
 
-        armLift1.setDirection(DcMotorSimple.Direction.REVERSE);
+        armLift1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         armLift1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        armLift1.setTargetPosition(0);
+        armLift1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
+        armLift2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         armLift2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        armLift2.setTargetPosition(0);
+        armLift2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         secArmLift1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         secArmLift1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -75,13 +81,13 @@ public class Arm{
     }
 
 
-    public void moveArmToHeightOfJunction(int pos, double FistSpeed){
-            moveFirstArm(FistSpeed);
+    public void moveArmToHeightOfJunction(int pos){
+            moveFirstArm(0.5, requiredAnglesforClearence[pos][0], telemetry);
             moveSecondArm(0.5, requiredAnglesforClearence[pos][1]);
-
-            telemetry.addData("Index of angle second arm: ", requiredAnglesforClearence[pos][1]);
-            telemetry.addData("Average of First: ", getAverageFirst());
-            telemetry.update();
+           lastIndex = pos;
+//            telemetry.addData("Index of angle second arm: ", requiredAnglesforClearence[pos][1]);
+//            telemetry.addData("Average of First: ", getAverageFirst());
+//            telemetry.update();
     }
 
     public void moveSecondArmToHeightOfStacks(){
@@ -91,63 +97,63 @@ public class Arm{
         }
     }
 
-    private void moveFirstArm(double speed){
-        //double max = Math.max(Math.abs(speed), 0.2);
-        armLift1.setPower(-speed);
-        armLift2.setPower(-speed);
-//        telemetry.addData("angle is ", angle);
-//        telemetry.update();
-//        armLift1.setTargetPosition(angle);
-//        armLift2.setTargetPosition(angle);
-//        if (angle > getAverageSecond()){
-//            armLift1.setPower(-speed);
-//            armLift2.setPower(-speed);
-//        }
-//        else if (angle < getAverageSecond()){
-//            armLift1.setPower(speed);
-//            armLift2.setPower(speed);
-//        }
-//        double differece = angle + getAverageFirst();
+//    private void ManualMovementFirstArm(double speed){
+//        //double max = Math.max(Math.abs(speed), 0.2);
+//        armLift1.setPower(-speed);
+//        armLift2.setPower(-speed);
+////        telemetry.addData("angle is ", angle);
+////        telemetry.update();
+////        armLift1.setTargetPosition(angle);
+////        armLift2.setTargetPosition(angle);
+////        if (angle > getAverageSecond()){
+////            armLift1.setPower(-speed);
+////            armLift2.setPower(-speed);
+////        }
+////        else if (angle < getAverageSecond()){
+////            armLift1.setPower(speed);
+////            armLift2.setPower(speed);
+////        }
+////        double differece = angle + getAverageFirst();
+////
+////        if (differece > 0){
+////            armLift1.setPower(-speed);
+////            armLift2.setPower(-speed);
+////
+////            armLift1.setTargetPosition(angle);
+////            armLift2.setTargetPosition(angle);
+////            differece = angle - getAverageFirst();
+////        }
+////        else if(differece < 0 ){
+////            armLift1.setPower(speed);
+////            armLift2.setPower(speed);
+////            armLift2.setTargetPosition(-angle);
+////            armLift1.setTargetPosition(-angle);
+////            differece = angle - getAverageFirst();
+////        }
+////
+////        else if(differece == 0){
+////            armLift1.setPower(0);
+////            armLift2.setPower(0);
+////        }
+////        armLift1.setTargetPosition(angle);
+////        armLift2.setTargetPosition(angle);
+////        telemetry.addData("target pos: ", angle);
+////
+////        if(angle > getAverageFirst()){
+////            armLift1.setPower(speed);
+////            armLift2.setPower(speed);
+////        }
+////        else if (angle < getAverageFirst()){
+////            armLift1.setPower(-speed);
+////            armLift2.setPower(-speed);
+////        }
+////
+////        if(getAverageFirst() >= angle){
+////            armLift1.setPower(0);
+////            armLift2.setPower(0);
+////        }
 //
-//        if (differece > 0){
-//            armLift1.setPower(-speed);
-//            armLift2.setPower(-speed);
-//
-//            armLift1.setTargetPosition(angle);
-//            armLift2.setTargetPosition(angle);
-//            differece = angle - getAverageFirst();
-//        }
-//        else if(differece < 0 ){
-//            armLift1.setPower(speed);
-//            armLift2.setPower(speed);
-//            armLift2.setTargetPosition(-angle);
-//            armLift1.setTargetPosition(-angle);
-//            differece = angle - getAverageFirst();
-//        }
-//
-//        else if(differece == 0){
-//            armLift1.setPower(0);
-//            armLift2.setPower(0);
-//        }
-//        armLift1.setTargetPosition(angle);
-//        armLift2.setTargetPosition(angle);
-//        telemetry.addData("target pos: ", angle);
-//
-//        if(angle > getAverageFirst()){
-//            armLift1.setPower(speed);
-//            armLift2.setPower(speed);
-//        }
-//        else if (angle < getAverageFirst()){
-//            armLift1.setPower(-speed);
-//            armLift2.setPower(-speed);
-//        }
-//
-//        if(getAverageFirst() >= angle){
-//            armLift1.setPower(0);
-//            armLift2.setPower(0);
-//        }
-
-    }
+//    }
 
     private void moveSecondArm(double speed, int angle){
         secArmLift1.setTargetPosition(angle);
@@ -162,13 +168,6 @@ public class Arm{
         }
     }
 
-    public void MoveManually(double firstSpeed, double SecondSpeed){
-        armLift1.setPower(firstSpeed);
-        armLift2.setPower(firstSpeed);
-        secArmLift2.setPower(SecondSpeed);
-        secArmLift1.setPower(SecondSpeed);
-    }
-
     public double getAverageFirst(){
         return (armLift1.getCurrentPosition() + armLift2.getCurrentPosition()) / 2;
     }
@@ -177,7 +176,7 @@ public class Arm{
     }
 
     public void disable(){
-        moveFirstArm(0);
+        moveFirstArm(0, 0, telemetry);
         moveSecondArm(0,0);
     }
 
@@ -212,6 +211,20 @@ public class Arm{
             issueWithEncoder = true;
             return false;
         }
+    }
+
+    public void moveFirstArm(double speed, int angle, Telemetry telemetry){
+        armLift1.setPower(speed);
+        armLift1.setTargetPosition(angle);
+
+        armLift2.setPower(-speed);
+        armLift2.setTargetPosition(-angle);
+
+        telemetry.addData("In: ", "Moving First Arm");
+    }
+
+    public void updateHeight(){
+
     }
 
 
