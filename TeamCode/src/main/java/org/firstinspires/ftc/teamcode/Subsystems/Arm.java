@@ -27,9 +27,10 @@ public class Arm{
 
     public final int[][] requiredAnglesforClearence = {
             {0 , 0},        // front
-            {0, 350},      // ground
-            {500, 350},     // medium
-            {500, 525}     // high
+            {0, 146},      // ground
+            {0, 50},        // low
+            {2300, 145},     // medium
+            {2300, 210}     // high
     };
 
     public final int[] requiredAnglesForStacks = {
@@ -53,28 +54,28 @@ public class Arm{
         secArmLift2 = hardwareMap.get(DcMotor.class, "secArm2");
         telemetry = tele;
 
-        armLift1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//        armLift1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         armLift1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        armLift1.setTargetPosition(0);
-        armLift1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//        armLift1.setTargetPosition(0);
+//        armLift1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        armLift2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//        armLift2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         armLift2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        armLift2.setTargetPosition(0);
-        armLift2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//        armLift2.setTargetPosition(0);
+//        armLift2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        secArmLift1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//        secArmLift1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         secArmLift1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        secArmLift1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        secArmLift1.setTargetPosition(0);
-       secArmLift1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        secArmLift1.setDirection(DcMotorSimple.Direction.REVERSE);
+//        secArmLift1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//        secArmLift1.setTargetPosition(0);
+//       secArmLift1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//        secArmLift1.setDirection(DcMotorSimple.Direction.REVERSE);
 
-        secArmLift2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//        secArmLift2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         secArmLift2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        secArmLift2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        secArmLift2.setTargetPosition(0);
-        secArmLift2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//        secArmLift2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//        secArmLift2.setTargetPosition(0);
+//        secArmLift2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
 //        lock = hardwareMap.get(Servo.class, "lock");
 //        lock.setPosition(1);
@@ -82,8 +83,8 @@ public class Arm{
 
 
     public void moveArmToHeightOfJunction(int pos){
-            moveFirstArm(0.5, requiredAnglesforClearence[pos][0], telemetry);
-            moveSecondArm(0.5, requiredAnglesforClearence[pos][1]);
+            moveFirstArm(-0.1, requiredAnglesforClearence[pos][0], telemetry);
+            moveSecondArm(0.1, requiredAnglesforClearence[pos][1]);
            lastIndex = pos;
 //            telemetry.addData("Index of angle second arm: ", requiredAnglesforClearence[pos][1]);
 //            telemetry.addData("Average of First: ", getAverageFirst());
@@ -92,9 +93,14 @@ public class Arm{
 
     public void moveSecondArmToHeightOfStacks(){
         if(numberOfRemainingCones != 0){
-            moveSecondArm(0.5, requiredAnglesForStacks[numberOfRemainingCones - 1]);
+            moveSecondArm(0.1, requiredAnglesForStacks[numberOfRemainingCones - 1]);
             numberOfRemainingCones--;
         }
+    }
+
+    private void manualFirstArm(double speed) {
+        armLift1.setPower(speed);
+        armLift2.setPower(-speed);
     }
 
 //    private void ManualMovementFirstArm(double speed){
@@ -156,8 +162,8 @@ public class Arm{
 //    }
 
     private void moveSecondArm(double speed, int angle){
-        secArmLift1.setTargetPosition(angle);
-        secArmLift2.setTargetPosition(angle);
+        secArmLift1.setTargetPosition(-angle);
+        secArmLift2.setTargetPosition(-angle);
         if (angle > getAverageSecond()){
             secArmLift1.setPower(-speed);
             secArmLift2.setPower(-speed);
@@ -215,10 +221,10 @@ public class Arm{
 
     public void moveFirstArm(double speed, int angle, Telemetry telemetry){
         armLift1.setPower(speed);
-        armLift1.setTargetPosition(angle);
+        armLift1.setTargetPosition(-angle);
 
         armLift2.setPower(-speed);
-        armLift2.setTargetPosition(-angle);
+        armLift2.setTargetPosition(angle);
 
         telemetry.addData("In: ", "Moving First Arm");
     }
