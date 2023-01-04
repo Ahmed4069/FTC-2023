@@ -221,10 +221,10 @@ public class Arm{
 
     public void moveFirstArm(double speed, int angle, Telemetry telemetry){
         armLift1.setPower(speed);
-        armLift1.setTargetPosition(-angle);
+        armLift1.setTargetPosition(angle);
 
         armLift2.setPower(-speed);
-        armLift2.setTargetPosition(angle);
+        armLift2.setTargetPosition(-angle);
 
         telemetry.addData("In: ", "Moving First Arm");
     }
