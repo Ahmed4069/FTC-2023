@@ -48,6 +48,7 @@ public class TurnToAngle extends Commands {
 
     @Override
     public boolean isFinsihed() {
-        return false;
+        return wrapAround(this.desiredAngle, robot.gyro.getHeading()) < 0.15;
+//        return false;
     }
 }

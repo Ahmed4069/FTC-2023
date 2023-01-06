@@ -4,6 +4,8 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.Autonomous.Commands.DriveToPosCommand;
+import org.firstinspires.ftc.teamcode.Autonomous.Commands.IntakeOn;
+import org.firstinspires.ftc.teamcode.Autonomous.Commands.RaiseArm;
 import org.firstinspires.ftc.teamcode.Autonomous.Commands.TurnToAngle;
 import org.firstinspires.ftc.teamcode.Main.Robot.Robot;
 
@@ -18,8 +20,11 @@ public class AutoForward extends LinearOpMode{
         robot = new Robot(hardwareMap, telemetry);
         scheduler = new Scheduler(robot, telemetry);
 
-        scheduler.addCommand(new DriveToPosCommand(0.5, 40000));
-        scheduler.addCommand(new TurnToAngle(0.5, -Math.PI / 4));
+//        scheduler.addCommand(new DriveToPosCommand(0.5, 85000));
+//        scheduler.addCommand(new TurnToAngle(0.5, Math.PI / 4));
+//        scheduler.addCommand(new DriveToPosCommand(0.5, 5000));
+        scheduler.addCommand(new RaiseArm(4, 0));
+//        scheduler.addCommand(new IntakeOn(IntakeOn.Use.OUT));
 
         waitForStart();
 
@@ -29,7 +34,8 @@ public class AutoForward extends LinearOpMode{
             idle();
         }
 
-        robot.driveBase.print();
+        telemetry.addLine("done");
+        telemetry.addData("difference", robot.arm.diff());
         telemetry.update();
 
         while (opModeIsActive()) {
