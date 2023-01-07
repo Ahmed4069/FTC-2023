@@ -1,10 +1,6 @@
 package org.firstinspires.ftc.teamcode.Autonomous.Commands;
 
 public class RaiseArm extends Commands {
-    public enum Heights {
-        MEDIUM,
-        HIGH
-    }
 
     // the index of the encoder values in the position-to-encoder map
     int desired_height;
@@ -12,23 +8,26 @@ public class RaiseArm extends Commands {
     // the desired power
     double desired_power;
 
-    public RaiseArm (Heights h, double p) {
-        this.desired_height = (h == Heights.MEDIUM) ? 2 : 3;
+    public RaiseArm (int h, double p) {
+        this.desired_height = h;
         this.desired_power = p;
     }
 
     @Override
     public void start() {
-
+        robot.arm.moveArmToHeightOfJunction(desired_height);
     }
 
     @Override
     public void loop() {
+        telemetry.addData("looped", desired_height);
+        telemetry.update();
         robot.arm.moveArmToHeightOfJunction(desired_height);
     }
 
     @Override
     public boolean isFinsihed() {
-        return robot.arm.getAverageFirst() < robot.arm.requiredAnglesforClearence[desired_height][0] - 50;
+        /** warning: this may cause problems later */
+        return robot.arm.atPosition();
     }
 }

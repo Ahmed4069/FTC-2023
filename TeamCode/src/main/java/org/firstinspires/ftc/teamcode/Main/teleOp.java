@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.Main;
 //import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.robotcore.internal.system.AppUtil;
 import org.firstinspires.ftc.teamcode.Subsystems.Arm;
@@ -70,20 +71,24 @@ public class teleOp extends OpMode {
 
         //Minor changes done to support Field Oriented
 
-        if (gamepad2.b) {
+        if(gamepad2.dpad_up){
+            posCode = 0;
+        }
+
+        else if (gamepad2.a) {
             posCode = 1;
             // intake.lock();
         }
-        else if (gamepad2.x) {
+        else if (gamepad2.b) {
             posCode = 2;
             // intake.unlock();
         }
         else if (gamepad2.y) {
-            posCode = 3;
+            posCode = 4;
             //intake.unlockIntake();
         }
-        else if (gamepad2.a)
-            posCode = 0;
+        else if (gamepad2.x)
+            posCode = 3;
 
         arm.moveArmToHeightOfJunction(posCode);
 
