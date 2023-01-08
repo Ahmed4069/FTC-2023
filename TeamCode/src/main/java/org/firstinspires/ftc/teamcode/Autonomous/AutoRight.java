@@ -20,7 +20,7 @@ public class AutoRight extends LinearOpMode{
 //        scheduler.addCommand(new DriveToPosCommand(0.5, 85000));
 //        scheduler.addCommand(new TurnToAngle(0.5, Math.PI / 4));
 //        scheduler.addCommand(new DriveToPosCommand(0.5, 5000));
-        scheduler.addCommand(new RaiseArm(4, 0));
+        scheduler.addCommand(new RaiseArm(4, 0, RaiseArm.Options.Junction));
 //        scheduler.addCommand(new IntakeOn(IntakeOn.Use.OUT));
 
         waitForStart();
