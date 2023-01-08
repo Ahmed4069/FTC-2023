@@ -3,14 +3,11 @@ package org.firstinspires.ftc.teamcode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-import org.firstinspires.ftc.teamcode.Autonomous.Commands.DriveToPosCommand;
-import org.firstinspires.ftc.teamcode.Autonomous.Commands.IntakeOn;
 import org.firstinspires.ftc.teamcode.Autonomous.Commands.RaiseArm;
-import org.firstinspires.ftc.teamcode.Autonomous.Commands.TurnToAngle;
 import org.firstinspires.ftc.teamcode.Main.Robot.Robot;
 
 @Autonomous
-public class AutoForward extends LinearOpMode{
+public class AutoRight extends LinearOpMode{
     Robot robot;
     Scheduler scheduler;
 

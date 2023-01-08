@@ -13,7 +13,6 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 public class Arm {
     DcMotor secArmLift1, secArmLift2;
     Motor armLift1, armLift2;
-
     Telemetry telemetry;
 
     public final int[][] requiredAnglesforClearence = {
@@ -31,10 +30,6 @@ public class Arm {
             {0, 160},
             {0, 175}
     };
-    public int numberOfRemainingCones = 5;
-
-    public boolean issueWithPorts = false;
-    public boolean issueWithEncoder = false;
 
     double kP = 0.002;
 
@@ -45,7 +40,6 @@ public class Arm {
         secArmLift1 = hardwareMap.get(DcMotor.class, "secArm1");
         secArmLift2 = hardwareMap.get(DcMotor.class, "secArm2");
         telemetry = tele;
-
         // lower arm setup
         armLift1 = new Motor(hardwareMap, "lift1");
         armLift2 = new Motor(hardwareMap, "lift2");
@@ -120,7 +114,11 @@ public class Arm {
             telemetry.addData("first arm position", armLift1.getCurrentPosition());
             telemetry.addData("second arm position", getAverageSecond());
 
-            if (lastPos == 1 /**Add Something Here*/) {
+            if(numOfConesLeft > 5){
+                numOfConesLeft = 0;
+            }
+
+            if (requiredAnglesforClearence[lastPos][0] > requiredAnglesForStacks[numOfConesLeft][0]) {
                 if (!armLift1.atTargetPosition()) {
                     moveFirstArm(-0.55, requiredAnglesForStacks[numOfConesLeft][0], telemetry);
                    // telemetry.addLine("condition 1");
@@ -130,7 +128,7 @@ public class Arm {
                     armLift2.set(0);
                     //telemetry.addLine("condition 2");
                 }
-            } else if (lastPos > 1 /**Add Something Here*/) {
+            } else if (requiredAnglesforClearence[lastPos][0] < requiredAnglesForStacks[numOfConesLeft][0]) {
                 if (!(Math.abs(getAverageSecond() - requiredAnglesForStacks[numOfConesLeft][1]) < 5)) {
                     moveSecondArm(-0.75, requiredAnglesforClearence[numOfConesLeft][1]);
                     //telemetry.addLine("condition 3");
@@ -140,6 +138,7 @@ public class Arm {
                 }
             }
 
+
         }
 
     public boolean atPosition() {
@@ -148,13 +147,6 @@ public class Arm {
 
     public double diff() {
         return Math.abs(getAverageSecond() - requiredAnglesforClearence[lastPos][1]);
-    }
-
-    public void moveSecondArmToHeightOfStacks() {
-        if (numberOfRemainingCones != 0) {
-            moveSecondArm(-0.1, requiredAnglesForStacks[numberOfRemainingCones - 1][1]);
-            numberOfRemainingCones--;
-        }
     }
 
     private void moveFirstArm(double speed, int angle, Telemetry telemetry) {
@@ -173,8 +165,6 @@ public class Arm {
             armLift2.stopMotor();
         }
     }
-
-
         private void moveSecondArm ( double speed, int angle){
             secArmLift1.setTargetPosition(-angle);
             secArmLift2.setTargetPosition(-angle);
@@ -194,7 +184,7 @@ public class Arm {
         }
 
         public void disable () {
-            /** something here */
+            moveFirstArm(0, 0, telemetry);
             moveSecondArm(0, 0);
         }
 

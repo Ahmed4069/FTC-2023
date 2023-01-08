@@ -46,7 +46,6 @@ public class CommandAuto extends LinearOpMode{
         //lift and deposit cone
         scheduler.addCommand(new IntakeOn(IntakeOn.Use.OUT));
 
-
         waitForStart();
 
 
