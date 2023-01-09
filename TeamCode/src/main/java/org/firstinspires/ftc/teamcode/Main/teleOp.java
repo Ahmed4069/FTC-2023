@@ -93,10 +93,9 @@ public class teleOp extends OpMode {
         arm.moveArmToHeightOfJunction(posCode);
 
         if (gamepad2.left_bumper){
-            arm.moveSecondArmToHeightOfStacks();
-            System.printInt("Number of Cones remaining", arm.numberOfRemainingCones);
+            arm.moveArmToHeightOfStacks();
+            telemetry.addData("Num of remaining cones: ", arm.numOfConesLeft);
         }
-
         //intake
         intake.setServo(-gamepad2.left_stick_y);
     }
