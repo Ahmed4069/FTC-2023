@@ -36,7 +36,7 @@ public class Arm{
     public boolean issueWithPorts = false;
     public boolean issueWithEncoder = false;
 
-    double kP = 0.002;
+    double kP = 0.0025;
 
     int lastPos = 0;
 
@@ -91,37 +91,70 @@ public class Arm{
         telemetry.addData("first arm position", armLift1.getCurrentPosition());
         telemetry.addData("second arm position", getAverageSecond());
 
-        if(lastPos < pos){
+//        if(lastPos < pos){
+//            if (!armLift1.atTargetPosition()) {
+//                moveFirstArm(-0.55, requiredAnglesforClearence[pos][0], telemetry);
+//                telemetry.addLine("condition 1");
+//            } else {
+//                moveSecondArm(-0.75, requiredAnglesforClearence[pos][1]);
+//                armLift1.set(0);
+//                armLift2.set(0);
+//                telemetry.addLine("condition 2");
+//            }
+//        }
+//        else if(lastPos > pos){
+//            telemetry.addLine("going down");
+//            if (!(Math.abs(getAverageSecond() - requiredAnglesforClearence[pos][1]) < 5)) {
+//                moveSecondArm(-0.75, requiredAnglesforClearence[pos][1]);
+//                telemetry.addLine("condition 3");
+//            } else {
+//                moveFirstArm(-0.55, requiredAnglesforClearence[pos][0], telemetry);
+//                telemetry.addLine("condition 4");
+//            }
+//        }
+//        telemetry.update();
+        armLift1.setTargetPosition(requiredAnglesforClearence[pos][0]);
+        armLift2.setTargetPosition(requiredAnglesforClearence[pos][0]);
+        secArmLift1.setTargetPosition(-requiredAnglesforClearence[pos][1]);
+        secArmLift2.setTargetPosition(-requiredAnglesforClearence[pos][1]);
+
+        if (armLift1.getCurrentPosition() < requiredAnglesforClearence[pos][0]) {
+            telemetry.addLine("going up");
+            // move up: first arm moves first
             if (!armLift1.atTargetPosition()) {
                 moveFirstArm(-0.55, requiredAnglesforClearence[pos][0], telemetry);
+                stopSecondArm();
                 telemetry.addLine("condition 1");
             } else {
                 moveSecondArm(-0.75, requiredAnglesforClearence[pos][1]);
-                armLift1.set(0);
-                armLift2.set(0);
+                stopFirstArm();
                 telemetry.addLine("condition 2");
             }
-        }
-        else if(lastPos > pos){
-            if (!(Math.abs(getAverageSecond() - requiredAnglesforClearence[pos][1]) < 5)) {
+        } else {
+            telemetry.addLine("going down");
+            if (!(Math.abs(getAverageSecond() + requiredAnglesforClearence[pos][1]) < 6)) {
                 moveSecondArm(-0.75, requiredAnglesforClearence[pos][1]);
+                stopFirstArm();
                 telemetry.addLine("condition 3");
             } else {
                 moveFirstArm(-0.55, requiredAnglesforClearence[pos][0], telemetry);
+                stopSecondArm();
                 telemetry.addLine("condition 4");
             }
         }
+
         telemetry.update();
 
-        double lastPos = pos;
+        lastPos = pos;
     }
 
     public boolean atPosition() {
-        return armLift1.atTargetPosition() && (Math.abs(getAverageSecond() - requiredAnglesforClearence[lastPos][1]) < 5);
+        return armLift1.atTargetPosition() && (Math.abs(getAverageSecond() + requiredAnglesforClearence[lastPos][1]) < 6);
     }
 
     public double diff() {
-        return Math.abs(getAverageSecond() - requiredAnglesforClearence[lastPos][1]);
+        telemetry.addData("lastPos", lastPos);
+        return Math.abs(getAverageSecond() + requiredAnglesforClearence[lastPos][1]);
     }
 
     public void moveSecondArmToHeightOfStacks() {
@@ -143,17 +176,18 @@ public class Arm{
             armLift2.set(speed);
         }else {
             telemetry.addLine("stopped");
-            armLift1.stopMotor();
-            armLift2.stopMotor();
+            stopFirstArm();
         }
-
 
         telemetry.update();
     }
 
+    public void stopFirstArm() {
+        armLift1.stopMotor();
+        armLift2.stopMotor();
+    }
+
     private void moveSecondArm ( double speed, int angle){
-        secArmLift1.setTargetPosition(-angle);
-        secArmLift2.setTargetPosition(-angle);
         if (angle > getAverageSecond()) {
             secArmLift1.setPower(-speed);
             secArmLift2.setPower(-speed);
@@ -165,6 +199,12 @@ public class Arm{
             secArmLift2.setPower(0);
         }
     }
+
+    public void stopSecondArm() {
+        secArmLift1.setPower(0);
+        secArmLift2.setPower(0);
+    }
+
     public double getAverageSecond () {
         return (secArmLift1.getCurrentPosition() + secArmLift2.getCurrentPosition()) / 2;
     }

@@ -7,7 +7,6 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 public class Intake {
     CRServo servo1, servo2;
-    Servo lock;
 
     public boolean issueWithPorts = false, issueWithLock = false;
 
@@ -28,29 +27,6 @@ public class Intake {
     public void disable(){
         servo1.setPower(0);
         servo2.setPower(0);
-    }
-
-    public void lockIntake(){
-        lock.setPosition(1);
-    }
-    public void unlockIntake(){
-        lock.setPosition(0);
-    }
-
-    public boolean checkServo(){
-        if (servo1.getPortNumber() == 0 && servo2.getPortNumber() == 1) {
-            if(lock.getPosition() == 1){
-                return true;
-            }
-            else{
-                issueWithLock = true;
-                return false;
-            }
-        }
-        else{
-            issueWithPorts = true;
-            return false;
-        }
     }
 
     public double getSpeed(){

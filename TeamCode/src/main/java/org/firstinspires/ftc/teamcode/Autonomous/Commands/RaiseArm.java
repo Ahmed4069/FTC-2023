@@ -20,14 +20,20 @@ public class RaiseArm extends Commands {
 
     @Override
     public void loop() {
-        telemetry.addData("looped", desired_height);
-        telemetry.update();
         robot.arm.moveArmToHeightOfJunction(desired_height);
     }
 
     @Override
     public boolean isFinsihed() {
         /** warning: this may cause problems later */
-        return robot.arm.atPosition();
+        if (robot.arm.atPosition()) {
+            telemetry.addData("difference", robot.arm.diff());
+            robot.arm.stopFirstArm();
+            robot.arm.stopSecondArm();
+
+            return true;
+        } else {
+            return false;
+        }
     }
 }

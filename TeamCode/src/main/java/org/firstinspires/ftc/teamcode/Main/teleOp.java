@@ -99,12 +99,6 @@ public class teleOp extends OpMode {
 
         //intake
         intake.setServo(-gamepad2.left_stick_y);
-        if(gamepad2.dpad_up){
-            intake.lockIntake();
-        }
-        else if (gamepad2.dpad_down){
-            intake.unlockIntake();
-        }
     }
 
 }
