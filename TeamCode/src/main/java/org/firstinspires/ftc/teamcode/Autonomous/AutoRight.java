@@ -32,7 +32,6 @@ public class AutoRight extends LinearOpMode{
         }
 
         telemetry.addLine("done");
-        telemetry.addData("difference", robot.arm.diff());
         telemetry.update();
 
         while (opModeIsActive()) {

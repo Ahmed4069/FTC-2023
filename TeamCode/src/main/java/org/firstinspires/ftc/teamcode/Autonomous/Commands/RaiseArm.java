@@ -23,12 +23,15 @@ public class RaiseArm extends Commands {
 
     @Override
     public void start() {
-        if (options == Options.Junction){
-            robot.arm.moveArmToHeightOfJunction(desired_height);
-        }
-        else if (options == Options.Stacks){
-            robot.arm.moveArmToHeightOfStacks();
-        }
+        robot.arm.moveArmToHeightOfJunction(desired_height);
+        telemetry.addData("secArm pos", robot.arm.getAverageSecond());
+        telemetry.addData("target", robot.arm.requiredAnglesforClearence[robot.arm.lastPos][1]);
+//        if (options == Options.Junction){
+//            robot.arm.moveArmToHeightOfJunction(desired_height);
+//        }
+//        else if (options == Options.Stacks){
+//            robot.arm.moveArmToHeightOfStacks();
+//        }
     }
 
     @Override
@@ -50,7 +53,6 @@ public class RaiseArm extends Commands {
     public boolean isFinsihed() {
         /** warning: this may cause problems later */
         if (robot.arm.atPosition()) {
-            telemetry.addData("difference", robot.arm.diff());
             robot.arm.stopFirstArm();
             robot.arm.stopSecondArm();
 
