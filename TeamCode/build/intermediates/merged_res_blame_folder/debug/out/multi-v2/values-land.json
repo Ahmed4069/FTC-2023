@@ -4,7 +4,7 @@
             "outputFile": "org.firstinspires.ftc.teamcode.TeamCode-mergeDebugResources-33:/values-land/values-land.xml",
             "map": [
                 {
-                    "source": "/home/john/.gradle/caches/transforms-3/4353e223d6378cd2755246e8f8c0ac32/transformed/appcompat-1.2.0/res/values-land/values-land.xml",
+                    "source": "/Users/Ahmed/.gradle/caches/transforms-3/4353e223d6378cd2755246e8f8c0ac32/transformed/appcompat-1.2.0/res/values-land/values-land.xml",
                     "from": {
                         "startLines": "2,3,4",
                         "startColumns": "4,4,4",
@@ -21,7 +21,7 @@
                     }
                 },
                 {
-                    "source": "/home/john/.gradle/caches/transforms-3/a0c4186db51f73584a395ccc5ce42667/transformed/jetified-ui-1.1.1/res/values-land/values-land.xml",
+                    "source": "/Users/Ahmed/.gradle/caches/transforms-3/a0c4186db51f73584a395ccc5ce42667/transformed/jetified-ui-1.1.1/res/values-land/values-land.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",

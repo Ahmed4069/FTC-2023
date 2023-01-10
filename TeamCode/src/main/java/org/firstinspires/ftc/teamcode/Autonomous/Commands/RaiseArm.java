@@ -25,7 +25,7 @@ public class RaiseArm extends Commands {
     public void start() {
         robot.arm.moveArmToHeightOfJunction(desired_height);
         telemetry.addData("secArm pos", robot.arm.getAverageSecond());
-        telemetry.addData("target", robot.arm.requiredAnglesforClearence[robot.arm.lastPos][1]);
+        //telemetry.addData("target", robot.arm.requiredAnglesforClearence[robot.arm.lastPos][1]);
 //        if (options == Options.Junction){
 //            robot.arm.moveArmToHeightOfJunction(desired_height);
 //        }
