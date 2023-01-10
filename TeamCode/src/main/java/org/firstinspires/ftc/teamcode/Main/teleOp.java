@@ -98,7 +98,7 @@ public class teleOp extends OpMode {
             telemetry.addData("Num of remaining cones: ", arm.numOfConesLeft);
         }
         //intake
-        intake.setServo(-gamepad2.left_stick_y);
+        intake.setServo(gamepad2.left_stick_y);
     }
 
 }
