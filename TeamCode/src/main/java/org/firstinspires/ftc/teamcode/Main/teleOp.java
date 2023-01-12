@@ -74,7 +74,6 @@ public class teleOp extends OpMode {
         if(gamepad2.dpad_up){
             posCode = 0;
         }
-
         else if (gamepad2.a) {
             posCode = 1;
             // intake.lock();

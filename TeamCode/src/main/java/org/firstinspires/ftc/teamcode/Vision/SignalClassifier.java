@@ -249,10 +249,4 @@ public class SignalClassifier {
         telemetry.update();
     }
 
-    public void resetClassification(){
-        loadModel();
-        openCamera();
-        startCamera();
-    }
-
 }

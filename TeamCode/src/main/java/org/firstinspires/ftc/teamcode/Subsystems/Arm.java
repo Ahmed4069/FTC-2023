@@ -15,12 +15,13 @@ public class Arm {
     Motor armLift1, armLift2;
     Telemetry telemetry;
 
+
     public final int[][] requiredAnglesforClearence = {
             {0, 0},        // front
             {0, 146},      // ground
             {0, 50},        // low
-            {2300, 155},     // medium
-            {2300, 230}     // high
+            {2400, 120},     // medium
+            {2400, 240}     // high
     };
 
     public final int[][] requiredAnglesForStacks = {
@@ -35,6 +36,7 @@ public class Arm {
 
     int lastPos = 0;
     public int numOfConesLeft = 0;
+    int initialPos = 0;
 
     public Arm(HardwareMap hardwareMap, Telemetry tele) {
         secArmLift1 = hardwareMap.get(DcMotor.class, "secArm1");
@@ -47,6 +49,8 @@ public class Arm {
 
         armLift1.resetEncoder();
         armLift2.resetEncoder();
+
+        initialPos = armLift1.getCurrentPosition();
 
         armLift1.setRunMode(Motor.RunMode.PositionControl);
         armLift2.setRunMode(Motor.RunMode.PositionControl);
@@ -79,11 +83,13 @@ public class Arm {
         secArmLift2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         secArmLift2.setTargetPosition(0);
         secArmLift2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        armLift1.resetEncoder();
+        armLift2.resetEncoder();
     }
 
 
     public void moveArmToHeightOfJunction(int pos) {
-        telemetry.addData("first arm position", armLift1.getCurrentPosition());
+        telemetry.addData("first arm position", armLift1.getCurrentPosition() - initialPos);
         telemetry.addData("second arm position", getAverageSecond());
 
 //        if(lastPos < pos){
@@ -137,6 +143,15 @@ public class Arm {
                 telemetry.addLine("condition 4");
             }
         }
+
+//        if(pos > lastPos){
+//            moveFirstArm(-0.55, requiredAnglesforClearence[pos][0] - initialPos, telemetry);
+//            moveSecondArm(-0.55, requiredAnglesforClearence[pos][1]);
+//        }
+//        else if(pos < lastPos){
+//            moveSecondArm(-0.55, requiredAnglesforClearence[pos][1] - initialPos);
+//            moveFirstArm(-0.55, requiredAnglesforClearence[pos][0], telemetry);
+//        }
 
         telemetry.update();
 
