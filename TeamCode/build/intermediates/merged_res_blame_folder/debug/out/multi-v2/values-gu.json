@@ -4,24 +4,7 @@
             "outputFile": "org.firstinspires.ftc.teamcode.TeamCode-mergeDebugResources-33:/values-gu/values-gu.xml",
             "map": [
                 {
-                    "source": "/Users/Ahmed/.gradle/caches/transforms-3/a0c4186db51f73584a395ccc5ce42667/transformed/jetified-ui-1.1.1/res/values-gu/values-gu.xml",
-                    "from": {
-                        "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15",
-                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4",
-                        "startOffsets": "105,197,279,372,471,558,644,747,834,920,988,1057,1132,1198",
-                        "endColumns": "91,81,92,98,86,85,102,86,85,67,68,74,65,115",
-                        "endOffsets": "192,274,367,466,553,639,742,829,915,983,1052,1127,1193,1309"
-                    },
-                    "to": {
-                        "startLines": "29,30,31,32,33,34,35,36,37,38,39,41,43,44",
-                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4",
-                        "startOffsets": "2788,2880,2962,3055,3154,3241,3327,3430,3517,3603,3671,3821,3997,4063",
-                        "endColumns": "91,81,92,98,86,85,102,86,85,67,68,74,65,115",
-                        "endOffsets": "2875,2957,3050,3149,3236,3322,3425,3512,3598,3666,3735,3891,4058,4174"
-                    }
-                },
-                {
-                    "source": "/Users/Ahmed/.gradle/caches/transforms-3/4353e223d6378cd2755246e8f8c0ac32/transformed/appcompat-1.2.0/res/values-gu/values-gu.xml",
+                    "source": "/home/john/.gradle/caches/transforms-3/4353e223d6378cd2755246e8f8c0ac32/transformed/appcompat-1.2.0/res/values-gu/values-gu.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
@@ -38,7 +21,24 @@
                     }
                 },
                 {
-                    "source": "/Users/Ahmed/.gradle/caches/transforms-3/b4506edfdce83f918558219f8fc1fca4/transformed/core-1.6.0/res/values-gu/values-gu.xml",
+                    "source": "/home/john/.gradle/caches/transforms-3/a0c4186db51f73584a395ccc5ce42667/transformed/jetified-ui-1.1.1/res/values-gu/values-gu.xml",
+                    "from": {
+                        "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "105,197,279,372,471,558,644,747,834,920,988,1057,1132,1198",
+                        "endColumns": "91,81,92,98,86,85,102,86,85,67,68,74,65,115",
+                        "endOffsets": "192,274,367,466,553,639,742,829,915,983,1052,1127,1193,1309"
+                    },
+                    "to": {
+                        "startLines": "29,30,31,32,33,34,35,36,37,38,39,41,43,44",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "2788,2880,2962,3055,3154,3241,3327,3430,3517,3603,3671,3821,3997,4063",
+                        "endColumns": "91,81,92,98,86,85,102,86,85,67,68,74,65,115",
+                        "endOffsets": "2875,2957,3050,3149,3236,3322,3425,3512,3598,3666,3735,3891,4058,4174"
+                    }
+                },
+                {
+                    "source": "/home/john/.gradle/caches/transforms-3/b4506edfdce83f918558219f8fc1fca4/transformed/core-1.6.0/res/values-gu/values-gu.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",

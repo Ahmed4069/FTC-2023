@@ -42,17 +42,6 @@ public class teleOp extends OpMode {
         //encoder = new Encoder(hardwareMap);
 
         telemetry.addData("Robot Mode: ", mode);
-        try {
-            Scanner reader = new Scanner(new FileInputStream(AppUtil.ROBOT_DATA_DIR + "position.txt"));
-
-            // read values left of from auto
-            double angle = reader.nextDouble();
-            m_drive.last_angle = angle;
-
-        } catch (Exception e) {
-            telemetry.addLine(e.getMessage());
-            telemetry.update();
-        }
 
         System = new System(telemetry);
     }
