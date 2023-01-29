@@ -23,7 +23,7 @@ public class IntakeOn extends Commands {
 
     @Override
     public boolean isFinsihed() {
-        return robot.intake.getSpeed() == speed;
+        return robot.intake.getSpeed() == 1 || robot.intake.getSpeed() == -1;
     }
 
     public enum Use{

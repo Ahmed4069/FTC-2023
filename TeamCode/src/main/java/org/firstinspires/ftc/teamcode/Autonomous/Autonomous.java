@@ -49,8 +49,8 @@ public class Autonomous extends LinearOpMode {
         waitForStart();
 
         boolean complete = false;
-        String signal = classifier.classify();
-//        String signal = "ConeSignal1";
+//        String signal = classifier.classify();
+        String signal = "ConeSignal1";
         classifier.closeSignalClassifier();
         telemetry.addData("signal", signal);
         telemetry.update();

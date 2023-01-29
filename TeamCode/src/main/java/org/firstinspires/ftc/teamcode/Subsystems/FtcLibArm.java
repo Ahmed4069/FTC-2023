@@ -4,19 +4,21 @@ import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.tel
 
 import com.arcrobotics.ftclib.hardware.motors.Motor;
 import com.arcrobotics.ftclib.hardware.motors.MotorGroup;
+import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.Main.Robot.Robot;
 
-public class Arm {
-    DcMotor secArmLift1, secArmLift2;
-    MotorGroup FirstArm;
+public class FtcLibArm {
+    Motor secArmLift1, secArmLift2;
+    MotorGroup FirstArm, SecondArm;
     Motor armLift1, armLift2;
     Telemetry telemetry;
-
+    LED_Controller led_controller;
 
     public final int[][] requiredAnglesforClearence = {
             {0, 0},        // front
@@ -34,15 +36,15 @@ public class Arm {
             {0, 175}
     };
 
-    double kP = 0.0025;
+    private final double kP = 0.0025, kP2 = 0.025;
 
     int lastPos = 0;
     public int numOfConesLeft = 0;
     int initialPos = 0;
 
-    public Arm(HardwareMap hardwareMap, Telemetry tele) {
-        secArmLift1 = hardwareMap.get(DcMotor.class, "secArm1");
-        secArmLift2 = hardwareMap.get(DcMotor.class, "secArm2");
+    public FtcLibArm(HardwareMap hardwareMap, Telemetry tele, LED_Controller led_controller) {
+        this.led_controller = led_controller;
+
         telemetry = tele;
         // lower arm setup
         armLift1 = new Motor(hardwareMap, "lift1");
@@ -70,25 +72,32 @@ public class Arm {
 
         armLift1.setTargetPosition(0);
         armLift2.setTargetPosition(0);
+        //upper arm setup
+        secArmLift1 = new Motor(hardwareMap, "secArm1");
+        secArmLift2 = new Motor(hardwareMap, "secArm2");
 
+        secArmLift1.resetEncoder();
+        secArmLift2.resetEncoder();
 
-        // upper arm setup
-        secArmLift1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        secArmLift1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        secArmLift1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        secArmLift1.setRunMode(Motor.RunMode.PositionControl);
+        secArmLift2.setRunMode(Motor.RunMode.PositionControl);
+
+        secArmLift1.setInverted(true);
+
+        secArmLift1.setPositionCoefficient(kP2);
+        secArmLift2.setPositionCoefficient(kP2);
+
+        secArmLift1.setPositionTolerance(13);
+        secArmLift2.setPositionTolerance(13);
+
+        secArmLift1.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
+        secArmLift2.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
+
         secArmLift1.setTargetPosition(0);
-        secArmLift1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        secArmLift1.setDirection(DcMotorSimple.Direction.REVERSE);
-
-        secArmLift2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        secArmLift2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        secArmLift2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         secArmLift2.setTargetPosition(0);
-        secArmLift2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        armLift1.resetEncoder();
-        armLift2.resetEncoder();
 
         FirstArm = new MotorGroup(armLift1, armLift2);
+        SecondArm = new MotorGroup(secArmLift1, secArmLift2);
     }
 
 
@@ -130,10 +139,12 @@ public class Arm {
                 moveFirstArm(-0.55, requiredAnglesforClearence[pos][0], telemetry);
                 stopSecondArm();
                 telemetry.addLine("condition 1");
+                led_controller.update(RevBlinkinLedDriver.BlinkinPattern.BLUE);
             } else {
                 moveSecondArm(-0.75, requiredAnglesforClearence[pos][1]);
                 stopFirstArm();
                 telemetry.addLine("condition 2");
+                led_controller.update(RevBlinkinLedDriver.BlinkinPattern.HEARTBEAT_RED);
             }
         } else {
             telemetry.addLine("going down");
@@ -141,12 +152,15 @@ public class Arm {
                 moveSecondArm(-0.75, requiredAnglesforClearence[pos][1]);
                 stopFirstArm();
                 telemetry.addLine("condition 3");
+                led_controller.update(RevBlinkinLedDriver.BlinkinPattern.HEARTBEAT_RED);
             } else {
                 moveFirstArm(-0.55, requiredAnglesforClearence[pos][0], telemetry);
                 stopSecondArm();
                 telemetry.addLine("condition 4");
+                led_controller.update(RevBlinkinLedDriver.BlinkinPattern.BLUE);
             }
         }
+        if (FirstArm.atTargetPosition() && SecondArm.atTargetPosition()) led_controller.update(RevBlinkinLedDriver.BlinkinPattern.GOLD);
 
 //        if(pos > lastPos){
 //            moveFirstArm(-0.55, requiredAnglesforClearence[pos][0] - initialPos, telemetry);
@@ -227,20 +241,19 @@ public class Arm {
 
     private void moveSecondArm ( double speed, int angle){
         if (angle > getAverageSecond()) {
-            secArmLift1.setPower(-speed);
-            secArmLift2.setPower(-speed);
+            secArmLift1.set(-speed);
+            secArmLift2.set(-speed);
         } else if (angle < getAverageSecond()) {
-            secArmLift1.setPower(speed);
-            secArmLift2.setPower(speed);
+            secArmLift1.set(speed);
+            secArmLift2.set(speed);
         } else {
-            secArmLift1.setPower(0);
-            secArmLift2.setPower(0);
+            secArmLift1.set(0);
+            secArmLift2.set(0);
         }
     }
 
     public void stopSecondArm() {
-        secArmLift1.setPower(0);
-        secArmLift2.setPower(0);
+        SecondArm.stopMotor();
     }
 
     public double getAverageSecond () {

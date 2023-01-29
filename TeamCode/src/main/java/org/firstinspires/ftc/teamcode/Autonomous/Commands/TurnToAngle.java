@@ -12,7 +12,7 @@ public class TurnToAngle extends Commands {
     ElapsedTime timer = new ElapsedTime();
 
     double I = 0, lasterror;
-    double kP = 1, kD = 0, kI = 0;
+    double kP = 1.01, kD = 0, kI = 0;
 
     public TurnToAngle(double speed, double desiredAngle){
         this.desiredAngle = desiredAngle;
@@ -28,15 +28,13 @@ public class TurnToAngle extends Commands {
     public void loop() {
         double error = wrapAround(this.desiredAngle, robot.gyro.getHeading());
 
-        I += error * timer.seconds();
+        I += Math.abs(error) * timer.seconds();
         double d = (error - lasterror) / timer.seconds();
 
         lasterror = error;
         timer.reset();
 
         double power = (error * kP) + (d * kD) + (I * kI);
-        telemetry.addData("error is ", error);
-        telemetry.addData("power is ", power);
         robot.driveBase.tankDrive(-power, power);
     }
 
@@ -48,7 +46,7 @@ public class TurnToAngle extends Commands {
 
     @Override
     public boolean isFinsihed() {
-        return wrapAround(this.desiredAngle, robot.gyro.getHeading()) < 0.15;
+        return Math.abs(wrapAround(this.desiredAngle, robot.gyro.getHeading())) < 0.15;
 //        return false;
     }
 }

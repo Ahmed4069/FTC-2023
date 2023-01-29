@@ -50,7 +50,8 @@ public class CommandAuto extends LinearOpMode{
 
 
         if(clearToStartAuto){
-            String signal = classifier.classify();
+//            String signal = classifier.classify();
+            String signal = "";
 
             robot.System.printString("Signal: ", signal);
 

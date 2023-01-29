@@ -22,6 +22,6 @@ public class waitCommand extends Commands{
 
     @Override
     public boolean isFinsihed() {
-        return timer.seconds() >= time;
+        return timer.seconds() >= this.time;
     }
 }

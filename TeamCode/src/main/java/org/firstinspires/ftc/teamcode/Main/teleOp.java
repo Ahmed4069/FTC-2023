@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.Main;
 
 //import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Gamepad;
@@ -9,6 +10,7 @@ import org.firstinspires.ftc.robotcore.internal.system.AppUtil;
 import org.firstinspires.ftc.teamcode.Subsystems.Arm;
 import org.firstinspires.ftc.teamcode.Subsystems.DriveBase;
 import org.firstinspires.ftc.teamcode.Subsystems.Intake;
+import org.firstinspires.ftc.teamcode.Subsystems.LED_Controller;
 
 import java.io.FileInputStream;
 import java.util.Scanner;
@@ -23,7 +25,7 @@ public class teleOp extends OpMode {
     //Encoder encoder;
 
     RobotMode mode;
-
+    LED_Controller led_controller;
     double y, x, rx, triggers;
 
     int posCode = 0;
@@ -44,11 +46,15 @@ public class teleOp extends OpMode {
         telemetry.addData("Robot Mode: ", mode);
 
         System = new System(telemetry);
+
+        led_controller = new LED_Controller(hardwareMap);
+        led_controller.update(RevBlinkinLedDriver.BlinkinPattern.GOLD);
     }
 
     @Override
     public void loop() {
         mode = RobotMode.TELEOP_RUNNING;
+        led_controller.update(RevBlinkinLedDriver.BlinkinPattern.DARK_RED);
         //drive
         y = -gamepad1.left_stick_y;
         x = gamepad1.left_stick_x * 1.1;
@@ -86,7 +92,7 @@ public class teleOp extends OpMode {
             telemetry.addData("Num of remaining cones: ", arm.numOfConesLeft);
         }
         //intake
-        intake.setServo(gamepad2.left_stick_y);
+        intake.setServo(-gamepad2.left_stick_y);
     }
 
 }

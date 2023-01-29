@@ -1,4 +1,12 @@
+<<<<<<< Updated upstream
 #Thu Jan 12 16:14:11 EST 2023
+=======
+<<<<<<< HEAD
+#Sat Jan 14 13:52:43 EST 2023
+=======
+#Thu Jan 12 16:14:11 EST 2023
+>>>>>>> 5024ec56b16e270ecbe3160c8c048ff17bbea09b
+>>>>>>> Stashed changes
 path.4=0/classes.dex
 path.3=8/classes.dex
 path.2=11/classes.dex
@@ -22,7 +30,15 @@ base.0=/home/john/AndroidStudioProjects/FTC-2023/TeamCode/build/intermediates/de
 renamed.3=classes4.dex
 path.12=classes2.dex
 renamed.2=classes3.dex
+<<<<<<< Updated upstream
 path.13=classes3.dex
+=======
+<<<<<<< HEAD
+path.13=8/classes.dex
+=======
+path.13=classes3.dex
+>>>>>>> 5024ec56b16e270ecbe3160c8c048ff17bbea09b
+>>>>>>> Stashed changes
 renamed.1=classes2.dex
 path.10=4/classes.dex
 renamed.0=classes.dex
@@ -36,8 +52,22 @@ base.7=/home/john/AndroidStudioProjects/FTC-2023/TeamCode/build/intermediates/de
 renamed.5=classes6.dex
 base.6=/home/john/AndroidStudioProjects/FTC-2023/TeamCode/build/intermediates/dex/debug/mergeProjectDexDebug/10/classes.dex
 renamed.4=classes5.dex
+<<<<<<< Updated upstream
+=======
+<<<<<<< HEAD
+base.5=/Users/Ahmed/Documents/GitHub/FTC-2023/TeamCode/build/intermediates/dex/debug/mergeProjectDexDebug/1/classes.dex
+base.13=/Users/Ahmed/Documents/GitHub/FTC-2023/TeamCode/build/intermediates/dex/debug/mergeProjectDexDebug/8/classes.dex
+base.12=/Users/Ahmed/Documents/GitHub/FTC-2023/TeamCode/build/intermediates/dex/debug/mergeExtDexDebug/classes3.dex
+base.11=/Users/Ahmed/Documents/GitHub/FTC-2023/TeamCode/build/intermediates/dex/debug/mergeExtDexDebug/classes2.dex
+base.10=/Users/Ahmed/Documents/GitHub/FTC-2023/TeamCode/build/intermediates/dex/debug/mergeProjectDexDebug/4/classes.dex
+=======
+>>>>>>> Stashed changes
 base.5=/home/john/AndroidStudioProjects/FTC-2023/TeamCode/build/intermediates/dex/debug/mergeProjectDexDebug/1/classes.dex
 base.13=/home/john/AndroidStudioProjects/FTC-2023/TeamCode/build/intermediates/dex/debug/mergeExtDexDebug/classes3.dex
 base.12=/home/john/AndroidStudioProjects/FTC-2023/TeamCode/build/intermediates/dex/debug/mergeExtDexDebug/classes2.dex
 base.11=/home/john/AndroidStudioProjects/FTC-2023/TeamCode/build/intermediates/dex/debug/mergeProjectDexDebug/8/classes.dex
 base.10=/home/john/AndroidStudioProjects/FTC-2023/TeamCode/build/intermediates/dex/debug/mergeProjectDexDebug/4/classes.dex
+<<<<<<< Updated upstream
+=======
+>>>>>>> 5024ec56b16e270ecbe3160c8c048ff17bbea09b
+>>>>>>> Stashed changes

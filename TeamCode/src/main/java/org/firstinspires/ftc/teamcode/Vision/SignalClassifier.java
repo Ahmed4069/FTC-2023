@@ -103,7 +103,7 @@ public class SignalClassifier {
         }
     }
 
-    public String classify() {
+    public int classify() {
         // Convert bitmap to TensorImage
         TensorImage img = TensorImage.fromBitmap(rawImage);
         String Label = "";
@@ -120,7 +120,9 @@ public class SignalClassifier {
             }
         }
 
-        return Label;
+       int LabelNum = Label.charAt(10) - 48;
+
+        return LabelNum;
     }
 
 //    /** Do something with the frame */
