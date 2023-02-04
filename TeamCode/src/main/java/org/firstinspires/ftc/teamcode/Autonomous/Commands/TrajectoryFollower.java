@@ -30,7 +30,7 @@ public class TrajectoryFollower extends Commands{
     Timing.Timer timer;
 
     public TrajectoryFollower(Pose2d start, ArrayList<Translation2d> interiorWaypoints, Pose2d end, boolean isReverse) {
-        config = new TrajectoryConfig(1, 1);
+        config = new TrajectoryConfig(1, 0.5);
         config.setReversed(isReverse);
         this.start = start;
         this.interiorWaypoints = interiorWaypoints;

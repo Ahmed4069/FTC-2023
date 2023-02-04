@@ -1,27 +1,30 @@
 package org.firstinspires.ftc.teamcode.Autonomous.Commands;
 
+import com.arcrobotics.ftclib.util.Timing;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-public class waitCommand extends Commands{
-    ElapsedTime timer;
-    double time;
+import java.util.concurrent.TimeUnit;
 
-    public waitCommand(double time){
+public class waitCommand extends Commands{
+    Timing.Timer timer;
+    long time;
+
+    public waitCommand(long time){
         this.time = time;
-        timer = new ElapsedTime();
+        timer = new Timing.Timer(time, TimeUnit.SECONDS);
     }
     @Override
     public void start() {
-        timer.startTime();
+        timer.start();
     }
 
     @Override
     public void loop() {
-
+        telemetry.addData("Remaining time in wait", timer.elapsedTime());
     }
 
     @Override
     public boolean isFinished() {
-        return timer.seconds() >= this.time;
+        return timer.done();
     }
 }
