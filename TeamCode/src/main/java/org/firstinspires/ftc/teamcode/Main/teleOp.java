@@ -41,7 +41,6 @@ public class teleOp extends OpMode {
         intake = new Intake(hardwareMap);
         telemetry.addData("Status: ", "Initialized");
         arm = new Arm(hardwareMap, telemetry);
-        //encoder = new Encoder(hardwareMap);
 
         telemetry.addData("Robot Mode: ", mode);
 
@@ -62,10 +61,8 @@ public class teleOp extends OpMode {
         triggers = gamepad1.left_trigger - gamepad1.right_trigger;
 
         m_drive.driveByControls(x, y, rx);
-//        m_drive.driveByTrigger(triggers);
 
-        //Minor changes done to support Field Oriented
-
+//      arm
         if(gamepad2.dpad_up){
             posCode = 0;
         }
@@ -88,7 +85,7 @@ public class teleOp extends OpMode {
         telemetry.update();
 
         if (gamepad2.left_bumper){
-//            arm.moveArmToHeightOfStacks();
+            arm.moveArmToHeightOfStacks();
             telemetry.addData("Num of remaining cones: ", arm.numOfConesLeft);
         }
         //intake
