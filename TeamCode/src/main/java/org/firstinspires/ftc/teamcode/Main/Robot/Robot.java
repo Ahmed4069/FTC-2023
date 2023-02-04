@@ -36,4 +36,23 @@ public class Robot {
         driveBase.disable();
         blinkin.update(RevBlinkinLedDriver.BlinkinPattern.DARK_RED);
     }
+
+    public DriveBase getDriveBase(){
+        return driveBase;
+    }
+    public Intake getIntake(){
+        return intake;
+    }
+    public Arm getArm(){
+        return arm;
+    }
+    public Gyro getGyro(){
+        return gyro;
+    }
+    public System getSystem(){
+        return System;
+    }
+    public LED_Controller getBlinkin(){
+        return blinkin;
+    }
 }

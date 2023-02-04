@@ -10,8 +10,11 @@ public final class BuildConfig {
   // Field from default config.
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   public static final String APP_BUILD_TIME = "2023-01-12T16:12:35.755-0500";
 =======
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 <<<<<<< HEAD
@@ -20,6 +23,9 @@ public final class BuildConfig {
   public static final String APP_BUILD_TIME = "2023-01-12T16:12:35.755-0500";
 >>>>>>> 5024ec56b16e270ecbe3160c8c048ff17bbea09b
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes

@@ -59,7 +59,7 @@ public class DriveToPosCommand extends Commands {
     }
 
     @Override
-    public boolean isFinsihed() {
+    public boolean isFinished() {
         return Math.abs(this.desiredPosition - (robot.driveBase.getLeftEncoderValue() - this.initialPos)) < 50;
     }
 }

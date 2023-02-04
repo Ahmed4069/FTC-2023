@@ -1,5 +1,8 @@
 package org.firstinspires.ftc.teamcode.Autonomous.Auto;
 
+import com.arcrobotics.ftclib.geometry.Pose2d;
+import com.arcrobotics.ftclib.geometry.Rotation2d;
+import com.arcrobotics.ftclib.geometry.Translation2d;
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -9,12 +12,15 @@ import org.firstinspires.ftc.teamcode.Autonomous.Commands.DriveToPosCommand;
 import org.firstinspires.ftc.teamcode.Autonomous.Commands.IntakeOff;
 import org.firstinspires.ftc.teamcode.Autonomous.Commands.IntakeOn;
 import org.firstinspires.ftc.teamcode.Autonomous.Commands.RaiseArm;
+import org.firstinspires.ftc.teamcode.Autonomous.Commands.TrajectoryFollower;
 import org.firstinspires.ftc.teamcode.Autonomous.Commands.TurnToAngle;
 import org.firstinspires.ftc.teamcode.Autonomous.Commands.waitCommand;
 import org.firstinspires.ftc.teamcode.Autonomous.Scheduler;
 import org.firstinspires.ftc.teamcode.Main.Robot.Robot;
 import org.firstinspires.ftc.teamcode.Subsystems.LED_Controller;
 import org.firstinspires.ftc.teamcode.Vision.SignalClassifier;
+
+import java.util.ArrayList;
 
 @Autonomous
 public class AutoLeft extends LinearOpMode {

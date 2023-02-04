@@ -1,7 +1,10 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 #Thu Jan 12 16:14:11 EST 2023
 =======
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 <<<<<<< HEAD
@@ -10,6 +13,9 @@
 #Thu Jan 12 16:14:11 EST 2023
 >>>>>>> 5024ec56b16e270ecbe3160c8c048ff17bbea09b
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
@@ -38,8 +44,11 @@ path.12=classes2.dex
 renamed.2=classes3.dex
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 path.13=classes3.dex
 =======
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 <<<<<<< HEAD
@@ -48,6 +57,9 @@ path.13=8/classes.dex
 path.13=classes3.dex
 >>>>>>> 5024ec56b16e270ecbe3160c8c048ff17bbea09b
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
@@ -66,7 +78,10 @@ base.6=/home/john/AndroidStudioProjects/FTC-2023/TeamCode/build/intermediates/de
 renamed.4=classes5.dex
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 <<<<<<< HEAD
@@ -77,6 +92,9 @@ base.11=/Users/Ahmed/Documents/GitHub/FTC-2023/TeamCode/build/intermediates/dex/
 base.10=/Users/Ahmed/Documents/GitHub/FTC-2023/TeamCode/build/intermediates/dex/debug/mergeProjectDexDebug/4/classes.dex
 =======
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
@@ -87,6 +105,10 @@ base.11=/home/john/AndroidStudioProjects/FTC-2023/TeamCode/build/intermediates/d
 base.10=/home/john/AndroidStudioProjects/FTC-2023/TeamCode/build/intermediates/dex/debug/mergeProjectDexDebug/4/classes.dex
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+=======
+>>>>>>> 5024ec56b16e270ecbe3160c8c048ff17bbea09b
+>>>>>>> Stashed changes
 =======
 >>>>>>> 5024ec56b16e270ecbe3160c8c048ff17bbea09b
 >>>>>>> Stashed changes

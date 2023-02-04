@@ -2,6 +2,10 @@
 package org.firstinspires.ftc.teamcode.Subsystems;
 
 import com.arcrobotics.ftclib.controller.PIDController;
+import com.arcrobotics.ftclib.geometry.Pose2d;
+import com.arcrobotics.ftclib.geometry.Rotation2d;
+import com.arcrobotics.ftclib.geometry.Transform2d;
+import com.arcrobotics.ftclib.geometry.Translation2d;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -29,6 +33,9 @@ public class DriveBase {
 
     public boolean encodersClear = false;
     public boolean portsClear = false;
+
+    double lastLeft = 0, lastRight = 0, lastHeading = 0;
+    Pose2d currentPose;
 
     public DriveBase(HardwareMap hardwareMap, Telemetry tele) {
         telemetry = tele;
@@ -133,5 +140,42 @@ public class DriveBase {
         else{
             return false;
         }
+    }
+
+    public void resetPositions(){
+        motorLF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorRF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        telemetry.addLine("Restarting...");
+
+        lastLeft = 0;
+        lastRight = 0;
+        currentPose = new Pose2d(new Translation2d(0, 0), new Rotation2d(Math.toRadians(gyro.getHeading())));
+    }
+
+    public void updatePosition(){
+        double currentLeft = getLeftEncoderValue();
+        double currentRight = getRightEncoderValue();
+
+        double deltaLeft = currentLeft - lastLeft;
+        double deltaRight = currentRight - lastRight;
+
+        double heading = gyro.getHeading();
+        double deltaHeading = heading - lastHeading;
+
+        double distance = (deltaLeft + deltaRight) / 2.0;
+
+        Translation2d translation = new Translation2d(distance * Math.cos(Math.toRadians(deltaHeading)), distance * Math.sin(Math.toRadians(deltaHeading)));
+        Rotation2d rotation = new Rotation2d(Math.toRadians(deltaHeading));
+
+        currentPose = currentPose.transformBy(new Transform2d(translation, rotation));
+
+        lastRight = getRightEncoderValue();
+        lastLeft = getLeftEncoderValue();
+        lastHeading = gyro.getHeading();
+    }
+
+    public Pose2d getPose(){
+        return currentPose;
     }
 }

@@ -22,7 +22,7 @@ public class IntakeOn extends Commands {
     }
 
     @Override
-    public boolean isFinsihed() {
+    public boolean isFinished() {
         return robot.intake.getSpeed() == 1 || robot.intake.getSpeed() == -1;
     }
 

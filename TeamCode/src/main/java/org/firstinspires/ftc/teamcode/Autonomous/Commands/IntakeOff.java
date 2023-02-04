@@ -13,7 +13,7 @@ public class IntakeOff extends Commands{
     }
 
     @Override
-    public boolean isFinsihed() {
+    public boolean isFinished() {
         return true;
     }
 }

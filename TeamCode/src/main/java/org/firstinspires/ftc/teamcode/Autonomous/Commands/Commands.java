@@ -14,5 +14,5 @@ public abstract class Commands {
 
     public abstract void start();
     public abstract void loop();
-    public abstract boolean isFinsihed();
+    public abstract boolean isFinished();
 }

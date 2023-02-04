@@ -50,7 +50,7 @@ public class RaiseArm extends Commands {
     }
 
     @Override
-    public boolean isFinsihed() {
+    public boolean isFinished() {
         /** warning: this may cause problems later */
         if (robot.arm.atPosition()) {
             robot.arm.stopFirstArm();

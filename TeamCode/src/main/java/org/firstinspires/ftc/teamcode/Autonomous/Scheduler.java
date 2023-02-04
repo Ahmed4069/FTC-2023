@@ -43,7 +43,7 @@ public class Scheduler {
             }
 
             nextCommand.loop();
-            if (nextCommand.isFinsihed()){
+            if (nextCommand.isFinished()){
                 robot.driveBase.disable();
                 commands.remove(0);
                 robot.System.printString("Command", "removed");
