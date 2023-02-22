@@ -19,7 +19,7 @@ public class DriveBase {
     // define the hardware
     private DcMotorEx motorRF, motorRB, motorLF, motorLB;
 
-    private DcMotorEx encL, encR;
+    //private DcMotorEx encL, encR;
     private Gyro gyro;
     public double last_angle = 0;
 
@@ -28,11 +28,6 @@ public class DriveBase {
     public double[] last_position = {0, 0};
 
     Telemetry telemetry;
-
-    private Constants constants;
-
-    public boolean encodersClear = false;
-    public boolean portsClear = false;
 
     double lastLeft = 0, lastRight = 0, lastHeading = 0;
     Pose2d currentPose;
@@ -71,8 +66,8 @@ public class DriveBase {
     }
 
     /** a function to drive by controls, field oriented */
-    public void driveByControls(double x, double y, double rx) {
-        double botHeading = -gyro.getHeading();
+    public void driveByControls(double x, double y, double rx, int gyroAdjust) {
+        double botHeading = -gyro.getHeading() + gyroAdjust;
 
         double rotX = x * Math.cos(botHeading) - y * Math.sin(botHeading);
         double rotY = x * Math.sin(botHeading) + y * Math.cos(botHeading);
@@ -124,22 +119,6 @@ public class DriveBase {
 
     public int getRightEncoderValue(){
         return motorRF.getCurrentPosition();
-    }
-
-    public boolean driveBaseCheck(){
-        if(getLeftEncoderValue() == 0 && getRightEncoderValue() == 0){
-            encodersClear = true;
-            if(motorRF.getPortNumber() == Constants.motorRfPort && motorLF.getPortNumber() == Constants.motorLfPort && motorRB.getPortNumber() == Constants.motorRbPort && motorLB.getPortNumber() == Constants.motorLbPort){
-                portsClear = true;
-            }
-        }
-
-        if (portsClear && encodersClear){
-            return true;
-        }
-        else{
-            return false;
-        }
     }
 
     public void resetPositions(){

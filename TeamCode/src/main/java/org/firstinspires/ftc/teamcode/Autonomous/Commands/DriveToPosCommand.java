@@ -11,7 +11,8 @@ public class DriveToPosCommand extends Commands {
     private int initialPos;
     public double straightAngle;
 
-    private double kP = 0.000775, kI = 0, kD = 0.0001;
+   private double kP = 0.000775, kI = 0, kD = 0.0001;
+    //private double kP = 0.000780, kI = 0, kD = 0.00009;
     private int I = 0;
     private int lasterror;
 
@@ -44,7 +45,7 @@ public class DriveToPosCommand extends Commands {
         lasterror = error;
         timer.reset();
 
-        double power = Math.max(Math.min((error * kP) + (d * kD) + (I * kI), 1), -1) * 0.75;
+        double power = Math.max(Math.min((error * kP) + (d * kD) + (I * kI), 1), -1) * 1;
         robot.driveBase.tankDrive(power + wrapAround(robot.gyro.getHeading(), straightAngle) * 0.55,
                                  power - wrapAround(robot.gyro.getHeading(), straightAngle) * 0.55);
 
@@ -62,4 +63,5 @@ public class DriveToPosCommand extends Commands {
     public boolean isFinished() {
         return Math.abs(this.desiredPosition - (robot.driveBase.getLeftEncoderValue() - this.initialPos)) < 50;
     }
+
 }

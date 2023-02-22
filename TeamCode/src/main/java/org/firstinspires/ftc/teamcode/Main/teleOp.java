@@ -1,18 +1,19 @@
 package org.firstinspires.ftc.teamcode.Main;
 
 //import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.robotcore.internal.system.AppUtil;
-import org.firstinspires.ftc.teamcode.Subsystems.Arm;
 import org.firstinspires.ftc.teamcode.Subsystems.DriveBase;
 import org.firstinspires.ftc.teamcode.Subsystems.Intake;
-import org.firstinspires.ftc.teamcode.Subsystems.LED_Controller;
+import org.firstinspires.ftc.teamcode.Subsystems.ftclibArm;
+import org.firstinspires.ftc.teamcode.Subsystems.manualArm;
 
+import java.io.BufferedInputStream;
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 
@@ -21,75 +22,117 @@ import java.util.Scanner;
 public class teleOp extends OpMode {
     DriveBase m_drive;
     Intake intake;
-    Arm arm;
+    /** I changed this*/ ftclibArm arm;
+
+    manualArm manualArm;
     //Encoder encoder;
 
     RobotMode mode;
-    LED_Controller led_controller;
     double y, x, rx, triggers;
 
-    int posCode = 0;
+    int posCode = 0, conesTakenFromStacks = 0;
 
     boolean manualOverrideActive = false;
+    boolean isManualReady = false;
 
     System System;
+    double servoSpeed = 0;
+
+    boolean fileFound = true;
+    Scanner valueReader;
+
+    int gyroAdjust = 0, firstArmAdjust = 0, secondArmAdjust = 0;
 
     @Override
     public void init(){
-        mode = RobotMode.TELEOP_STARTING;
+        try {
+            valueReader = new Scanner(new FileInputStream(AppUtil.ROBOT_DATA_DIR + "position.txt"));
+            gyroAdjust = adjustGyro();
+            firstArmAdjust = adjustFirstArm();
+            secondArmAdjust = adjustSecondArm();
+            valueReader.close();
+        } catch (FileNotFoundException e) {
+            telemetry.addLine("File Not Found");
+            fileFound = false;
+        }
         m_drive = new DriveBase(hardwareMap, telemetry);
         intake = new Intake(hardwareMap);
-        telemetry.addData("Status: ", "Initialized");
-        arm = new Arm(hardwareMap, telemetry);
 
-        telemetry.addData("Robot Mode: ", mode);
+        arm = new ftclibArm(hardwareMap, telemetry);
 
         System = new System(telemetry);
 
-        led_controller = new LED_Controller(hardwareMap);
-        led_controller.update(RevBlinkinLedDriver.BlinkinPattern.GOLD);
+        mode = RobotMode.TELEOP_STARTING;
+        telemetry.addData("Status: ", "Initialized");
+        telemetry.addData("Robot Mode: ", mode);
     }
 
     @Override
     public void loop() {
-        mode = RobotMode.TELEOP_RUNNING;
-        led_controller.update(RevBlinkinLedDriver.BlinkinPattern.DARK_RED);
-        //drive
-        y = -gamepad1.left_stick_y;
-        x = gamepad1.left_stick_x * 1.1;
-        rx = gamepad1.right_stick_x;
-        triggers = gamepad1.left_trigger - gamepad1.right_trigger;
+        if(!manualOverrideActive){
+            y = -gamepad1.left_stick_y;
+            x = gamepad1.left_stick_x * 1.1;
+            rx = gamepad1.right_stick_x;
 
-        m_drive.driveByControls(x, y, rx);
+            m_drive.driveByControls(x, y, rx, gyroAdjust);
 
-//      arm
-        if(gamepad2.dpad_up){
-            posCode = 0;
-        }
-        else if (gamepad2.a) {
-            posCode = 1;
-            // intake.lock();
-        }
-        else if (gamepad2.b) {
-            posCode = 2;
-            // intake.unlock();
-        }
-        else if (gamepad2.y) {
-            posCode = 4;
-            //intake.unlockIntake();
-        }
-        else if (gamepad2.x)
-            posCode = 3;
+            mode = RobotMode.TELEOP_RUNNING;
+            if(!gamepad2.right_stick_button){
+                if(gamepad2.dpad_up) posCode = 0;
+                else if (gamepad2.a) posCode = 1;
+                else if (gamepad2.b) posCode = 2;
+                else if (gamepad2.x) posCode = 3;
+                else if (gamepad2.y) posCode = 4;
+                arm.moveArmToHeightOfJunction(posCode, firstArmAdjust, secondArmAdjust);
+            }
 
-        arm.moveArmToHeightOfJunction(posCode);
-        telemetry.update();
+            else if (gamepad2.right_stick_button){
+                conesTakenFromStacks = 5 + arm.numOfConesLeft;
+                arm.moveArmToHeightOfStacks(posCode, firstArmAdjust, secondArmAdjust);
+            }
+            telemetry.update();
+            //if (gamepad2.dpad_up || gamepad2.dpad_down) arm.ChangeValues(gamepad2.dpad_up, gamepad2.dpad_down);
 
-        if (gamepad2.left_bumper){
-            arm.moveArmToHeightOfStacks();
-            telemetry.addData("Num of remaining cones: ", arm.numOfConesLeft);
+            //intake
+            intake.setServo(-gamepad2.left_stick_y);
+
+            if(gamepad1.start && gamepad1.back && gamepad1.right_bumper && gamepad2.back && gamepad2.start){
+                manualOverrideActive = true;
+            }
         }
-        //intake
-        intake.setServo(-gamepad2.left_stick_y);
+
+        else if (manualOverrideActive){
+            if(!isManualReady){
+                arm.disable();
+                manualArm = new manualArm(hardwareMap);
+                isManualReady = true;
+            }
+            mode = RobotMode.TELEOP_MANUALOVERRIDE;
+
+            y = -gamepad1.left_stick_y;
+            x = gamepad1.left_stick_x * 1.1;
+            rx = gamepad1.right_stick_x;
+
+            m_drive.driveByControls(x, y, rx, gyroAdjust);
+
+            manualArm.update(gamepad2.left_stick_y, gamepad2.right_stick_y);
+
+            if(gamepad2.left_bumper) servoSpeed = 1;
+            else if(gamepad2.right_bumper) servoSpeed = -1;
+            else servoSpeed = 0;
+            intake.setServo(servoSpeed);
+        }
     }
 
+    private int adjustFirstArm() {
+        return valueReader.nextInt();
+    }
+
+    private int adjustGyro() {
+        return valueReader.nextInt();
+    }
+
+    private int adjustSecondArm(){
+        return valueReader.nextInt();
+    }
 }

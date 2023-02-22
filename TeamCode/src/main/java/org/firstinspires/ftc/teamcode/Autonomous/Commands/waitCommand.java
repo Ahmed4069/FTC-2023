@@ -11,7 +11,7 @@ public class waitCommand extends Commands{
 
     public waitCommand(long time){
         this.time = time;
-        timer = new Timing.Timer(time, TimeUnit.SECONDS);
+        timer = new Timing.Timer(time, TimeUnit.MILLISECONDS);
     }
     @Override
     public void start() {

@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.Subsystems;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.robotcore.external.navigation.Acceleration;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
 public class Gyro {
@@ -28,4 +29,12 @@ public class Gyro {
             return false;
         }
     }
+
+    public double get360Heading(){
+        return  imu.getAngularOrientation().firstAngle % 360;
+    }
+
+//   // public Acceleration getAcceleration(){
+//        return imu.getAcceleration();
+//    }
 }

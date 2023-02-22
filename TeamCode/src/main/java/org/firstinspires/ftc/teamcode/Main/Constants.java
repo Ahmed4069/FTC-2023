@@ -6,6 +6,7 @@ import java.io.File;
 
 public class Constants {
     public static File classification_model = new File(AppUtil.ROBOT_DATA_DIR, "models/classification/signal_classifier2.tflite");
+    public static File ValueSaver = new File("TeamCode/java/or.firstinspires.ftc.teamcode/Autonomous/Auto/values.txt");
 
 
     public static final byte motorRfPort = 0;

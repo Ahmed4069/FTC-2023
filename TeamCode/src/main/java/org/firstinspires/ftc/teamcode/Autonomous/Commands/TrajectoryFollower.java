@@ -17,13 +17,13 @@ import java.util.concurrent.TimeUnit;
 public class TrajectoryFollower extends Commands{
     TrajectoryConfig config;
     Pose2d start;
-    ArrayList<Translation2d> interiorWaypoints;
+    ArrayList<Translation2d> interiorWaypoints = new ArrayList<>();
     Pose2d end;
     Trajectory trajectory;
     RamseteController controller;
     Pose2d currentPose;
     DifferentialDriveKinematics kinematics;
-    private double trackWidth = 0.4064;
+    private double trackWidth = 0.3;
     private final double b = 2, zeta = 0.7;
     double startingTime = 0;
     double elapsedTime = 0;
@@ -32,14 +32,18 @@ public class TrajectoryFollower extends Commands{
     public TrajectoryFollower(Pose2d start, ArrayList<Translation2d> interiorWaypoints, Pose2d end, boolean isReverse) {
         config = new TrajectoryConfig(1, 0.5);
         config.setReversed(isReverse);
+
         this.start = start;
         this.interiorWaypoints = interiorWaypoints;
         this.end = end;
+        telemetry.addData("end", end);
+        telemetry.addData("start", start);
+        telemetry.addData("way", interiorWaypoints);
         trajectory = TrajectoryGenerator.generateTrajectory(start, interiorWaypoints, end, config);
         controller = new RamseteController(b, zeta);
         kinematics = new DifferentialDriveKinematics(trackWidth);
 
-        timer = new Timing.Timer(30, TimeUnit.SECONDS);
+        //timer = new Timing.Timer(Math.round(trajectory.getTotalTimeSeconds() + 2), TimeUnit.SECONDS);
     }
 
     @Override

@@ -85,10 +85,9 @@ public class Arm {
         secArmLift2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         secArmLift2.setTargetPosition(0);
         secArmLift2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        armLift1.resetEncoder();
-        armLift2.resetEncoder();
 
-        FirstArm = new MotorGroup(armLift1, armLift2);
+        armLift1.resetEncoder();
+        secArmLift1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
 
 
@@ -244,7 +243,7 @@ public class Arm {
     }
 
     public double getAverageSecond () {
-        return (secArmLift1.getCurrentPosition() + secArmLift2.getCurrentPosition()) / 2;
+        return secArmLift1.getCurrentPosition();
     }
 
     public void disable () {
